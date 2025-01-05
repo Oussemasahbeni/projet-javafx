@@ -181,8 +181,8 @@ public class AddEmployeeController {
             pNumberValidation.setText("! PhoneNumber cannot contain letters");
             phonenofield.setStyle(errorStyle);
         }
-        else if(pNumber.length() != 11){
-            pNumberValidation.setText("! PhoneNumber must contain exactly 11 digits");
+        else if(pNumber.length() != 8){
+            pNumberValidation.setText("! PhoneNumber must contain exactly 8 digits");
             phonenofield.setStyle(errorStyle);
         }
 
@@ -190,8 +190,8 @@ public class AddEmployeeController {
             cnicValidation.setText("! NIC cannot be cannot be empty");
             nicfield.setStyle(errorStyle);
         }
-        else if(cnic.length() != 13){
-            cnicValidation.setText("! NIC must contain exactly 13 digits");
+        else if(cnic.length() != 8){
+            cnicValidation.setText("! NIC must contain exactly 8 digits");
             nicfield.setStyle(errorStyle);
         }
         else if (!cnic.matches(numericRegex)) {
@@ -222,7 +222,8 @@ public class AddEmployeeController {
         Boolean apiResponse = null;
 
         if(!userEmail.isBlank() && !userEmail.isEmpty() && DatabaseFunctions.makeConnection() == true){
-            apiResponse = validateEmail(userEmail);
+            //apiResponse = validateEmail(userEmail);
+            apiResponse = true;
         }
         if(username.isBlank()){
             uNameValidation.setText("! UserName Cannot Be Empty");
@@ -280,6 +281,7 @@ public class AddEmployeeController {
 
             Employee employee = new Employee(Date.valueOf(joiningDate), fName, lName, userEmail, pNumber, cnic, designation, Integer.parseInt(salary), DatabaseFunctions.generateId("employees"), gender, username, tempArr[1], tempArr[0]);
             try{
+                System.out.println("Designation: " + designation);
                 DatabaseFunctions.saveToDb(employee);
             }
             catch (Exception e){

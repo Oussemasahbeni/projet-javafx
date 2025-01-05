@@ -2,6 +2,8 @@ package all_enums;
 
 public enum EmployeeDesignation {
     TRAINER,
-    MANAGER,
-    ADMIN
+    STOCK_MANAGER,
+    SUPERVISOR,
+    MAINTAINER,
+    CLEANING_STAFF,
 }

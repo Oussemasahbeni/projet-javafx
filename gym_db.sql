@@ -45,8 +45,8 @@ CREATE TABLE `bmi`
 --
 
 INSERT INTO `bmi` (`id`, `weight`, `recorded_date`, `fk_customer_id`, `recorded_month`, `height`, `bmi_value`)
-VALUES (1, 60, '2024-01-20', 1, 'January', 1.65, 22),
-       (2, 75, '2024-01-22', 2, 'January', 1.8, 23.1);
+VALUES (1, 60, '2025-01-20', 1, 'January', 1.65, 22),
+       (2, 75, '2025-01-22', 2, 'January', 1.8, 23.1);
 
 -- --------------------------------------------------------
 
@@ -153,8 +153,8 @@ CREATE TABLE `expenses`
 
 INSERT INTO `expenses` (`id`, `description`, `created_date`, `amount`, `month`, `year`, `fk_employee_id`,
                         `selected_date`, `current_status`)
-VALUES (1, 'Gym Maintenance', '2024-01-10', 5000, 'January', '2024', 1, '2024-01-09', 1),
-       (2, 'Equipment Purchase', '2024-01-12', 15000, 'January', '2024', 2, '2024-01-11', 1);
+VALUES (1, 'Gym Maintenance', '2025-01-10', 5000, 'January', '2025', 1, '2025-01-09', 1),
+       (2, 'Equipment Purchase', '2025-01-12', 15000, 'January', '2025', 2, '2025-01-11', 1);
 
 -- --------------------------------------------------------
 
@@ -210,8 +210,8 @@ CREATE TABLE `queries`
 INSERT INTO `queries` (`id`, `heading`, `email`, `description`, `created_date`, `username`, `reply`, `status`,
                        `current_status`)
 VALUES (1, 'Membership Inquiry', 'alice.brown@example.com', 'I would like to know more about the Starter Plan.',
-        '2024-01-15', 'alicebrown', NULL, 0, 1),
-       (2, 'Feedback', 'bob.johnson@example.com', 'Great facilities and trainers!', '2024-01-16', 'bobjohnson', NULL, 0,
+        '2025-01-15', 'alicebrown', NULL, 0, 1),
+       (2, 'Feedback', 'bob.johnson@example.com', 'Great facilities and trainers!', '2025-01-16', 'bobjohnson', NULL, 0,
         1);
 
 -- --------------------------------------------------------
@@ -236,7 +236,7 @@ CREATE TABLE `revenues`
 --
 
 INSERT INTO `revenues` (`id`, `for_month`, `for_year`, `updated_date`, `amount`)
-VALUES (1, 'January', '2024', '2024-01-31', 12000);
+VALUES (1, 'January', '2025', '2025-01-31', 12000);
 
 -- --------------------------------------------------------
 
@@ -264,8 +264,8 @@ CREATE TABLE `transactions`
 
 INSERT INTO `transactions` (`id`, `created_date`, `amount`, `transaction_number`, `bank_name`, `account_owner_name`,
                             `fk_customer_id`, `status`)
-VALUES (1, '2024-01-01', 2000, 'TXN1001', 'Bank A', 'Alice Brown', 1, 0),
-       (2, '2024-01-05', 3000, 'TXN1002', 'Bank B', 'Bob Johnson', 2, 0);
+VALUES (1, '2025-01-01', 2000, 'TXN1001', 'Bank A', 'Alice Brown', 1, 0),
+       (2, '2025-01-05', 3000, 'TXN1002', 'Bank B', 'Bob Johnson', 2, 0);
 
 --
 -- Indexes for dumped tables
@@ -416,6 +416,8 @@ ALTER TABLE `transactions`
     ADD CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`fk_customer_id`) REFERENCES `customers` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 COMMIT;
 
+ALTER TABLE `employees`
+    MODIFY designation VARCHAR(50) NOT NULL;
 
 CREATE PROCEDURE get_ids(IN table_name VARCHAR(255))
 BEGIN

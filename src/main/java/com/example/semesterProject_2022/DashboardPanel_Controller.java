@@ -1,6 +1,8 @@
 package com.example.semesterProject_2022;
 
 import database.DatabaseFunctions;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -12,9 +14,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 
 public class DashboardPanel_Controller implements Initializable {
 
@@ -78,10 +77,10 @@ public class DashboardPanel_Controller implements Initializable {
     private StackPane querystckpane;
 
     @FXML
-    private LineChart<?,?> monthlyProfitChart;
+    private LineChart<String, Number> monthlyProfitChart;
 
     @FXML
-    private BarChart<?,? > monthlyExpenseChart;
+    private BarChart<String, Number> monthlyExpenseChart;
     @FXML
     private Text totalMembers;
     private int noOfCustomers;
@@ -191,62 +190,47 @@ public class DashboardPanel_Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //TODO Get sum of All packages of one month and set here
-        monthlyRevenue.setText("1000");
-        //TODO Get sum of All expenses of one month and set here
-        monthlyExpense.setText("1000");
-        //TODO Difference of monthly packages and monthly expense will be set here
-        monthlyprofit.setText("20000");
+        // Fetch data from the database
+        double[] monthlyRevenues = DatabaseFunctions.getMonthlyRevenues();
+        double[] monthlyExpenses = DatabaseFunctions.getMonthlyExpenses();
+        double[] monthlyProfits = new double[12];
 
+        for (int i = 0; i < 12; i++) {
+            monthlyProfits[i] = monthlyRevenues[i] - monthlyExpenses[i];
+        }
 
-        /*--Members card--*/
-        for(int i =1; i<3;i++)
-        {
+        // Update the text fields
+        monthlyRevenue.setText(String.valueOf(monthlyRevenues[11])); // Assuming the last month is the current month
+        monthlyExpense.setText(String.valueOf(monthlyExpenses[11]));
+        monthlyprofit.setText(String.valueOf(monthlyProfits[11]));
+
+        // Update the members card
+        for (int i = 1; i < 3; i++) {
             memberstckpane.getChildren().get(i).setVisible(false);
         }
-        /*--End--*/
 
-
-        XYChart.Series series = new XYChart.Series<>();
-        series.setName("Monthly Profit in Rupees");
-        series.getData().add(new XYChart.Data<>("1", 2000));
-        series.getData().add(new XYChart.Data<>("2", 40000));
-        series.getData().add(new XYChart.Data<>("3", 60000));
-        series.getData().add(new XYChart.Data<>("4", 80000));
-        series.getData().add(new XYChart.Data<>("5", 100000));
-        series.getData().add(new XYChart.Data<>("6", 100000));
-        series.getData().add(new XYChart.Data<>("7", 100000));
-        series.getData().add(new XYChart.Data<>("8", 100000));
-        series.getData().add(new XYChart.Data<>("9", 100000));
-        series.getData().add(new XYChart.Data<>("10", 100000));
-        series.getData().add(new XYChart.Data<>("11", 100000));
-        series.getData().add(new XYChart.Data<>("12", 100000));
-
-        monthlyProfitChart.getData().add(series);
-
-        XYChart.Series series1 = new XYChart.Series<>();
-        series1.setName("Monthly Expense in Rupees");
-        series1.getData().add(new XYChart.Data<>("1", 2000));
-        series1.getData().add(new XYChart.Data<>("2", 40000));
-        series1.getData().add(new XYChart.Data<>("3", 60000));
-        series1.getData().add(new XYChart.Data<>("4", 80000));
-        series1.getData().add(new XYChart.Data<>("5", 100000));
-        series1.getData().add(new XYChart.Data<>("6", 100000));
-        series1.getData().add(new XYChart.Data<>("7", 100000));
-        series1.getData().add(new XYChart.Data<>("8", 100000));
-        series1.getData().add(new XYChart.Data<>("9", 100000));
-        series1.getData().add(new XYChart.Data<>("10", 100000));
-        series1.getData().add(new XYChart.Data<>("11", 100000));
-        series1.getData().add(new XYChart.Data<>("12", 100000));
-        monthlyExpenseChart.getData().add(series1);
-        try{
-            noOfCustomers = DatabaseFunctions.getNumberOfCustomers();
+        // Update the monthly profit chart
+        XYChart.Series<String, Number> profitSeries = new XYChart.Series<>();
+        profitSeries.setName("Monthly Profit in Dinars");
+        for (int i = 0; i < 12; i++) {
+            profitSeries.getData().add(new XYChart.Data<>(String.valueOf(i + 1), monthlyProfits[i]));
         }
-        catch (Exception e){
+        monthlyProfitChart.getData().add(profitSeries);
+
+        // Update the monthly expense chart
+        XYChart.Series<String, Number> expenseSeries = new XYChart.Series<>();
+        expenseSeries.setName("Monthly Expense in Dinars");
+        for (int i = 0; i < 12; i++) {
+            expenseSeries.getData().add(new XYChart.Data<>(String.valueOf(i + 1), monthlyExpenses[i]));
+        }
+        monthlyExpenseChart.getData().add(expenseSeries);
+
+        // Fetch and update the total number of customers
+        try {
+            noOfCustomers = DatabaseFunctions.getNumberOfCustomers();
+        } catch (Exception e) {
             System.out.println(e);
         }
         totalMembers.setText(String.valueOf(noOfCustomers));
-
-
     }
 }

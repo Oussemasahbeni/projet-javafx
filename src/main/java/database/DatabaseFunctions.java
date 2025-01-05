@@ -8,12 +8,14 @@ import model_class.*;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DatabaseFunctions {
 
     private static final String dbUrl = "jdbc:mysql://localhost:3306/gym_db";
     private static final String dbUsername = "root";
-    private static final String dbPassword = "your_secure_password";
+    private static final String dbPassword = "password";
 
 
     private static Connection dbConnection = null;
@@ -1006,6 +1008,60 @@ public class DatabaseFunctions {
         }
         return lastId + 1;
 
+    }
+
+    // get monthly revenues and expenses
+    public static double[] getMonthlyRevenues() {
+        double[] monthlyRevenues = new double[12];
+        String query = "SELECT month, revenue FROM monthly_revenues ORDER BY month";
+
+        try (PreparedStatement statement = dbConnection.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
+
+            while (resultSet.next()) {
+                int month = resultSet.getInt("month");
+                double revenue = resultSet.getDouble("revenue");
+                monthlyRevenues[month - 1] = revenue; // Assuming month is 1-based (1 for January, 2 for February, etc.)
+            }
+        } catch (SQLException e) {
+            System.out.println("Error fetching monthly revenues: " + e.getMessage());
+        }
+
+        return monthlyRevenues;
+    }
+
+    public static double[] getMonthlyExpenses() {
+        double[] monthlyExpenses = new double[12];
+        String query = "SELECT month, amount FROM expenses ORDER BY month";
+
+        // Map month names to their corresponding numerical values
+        Map<String, Integer> monthMap = new HashMap<>();
+        monthMap.put("January", 1);
+        monthMap.put("February", 2);
+        monthMap.put("March", 3);
+        monthMap.put("April", 4);
+        monthMap.put("May", 5);
+        monthMap.put("June", 6);
+        monthMap.put("July", 7);
+        monthMap.put("August", 8);
+        monthMap.put("September", 9);
+        monthMap.put("October", 10);
+        monthMap.put("November", 11);
+        monthMap.put("December", 12);
+
+        try (PreparedStatement statement = dbConnection.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
+
+            while (resultSet.next()) {
+                String monthName = resultSet.getString("month");
+                double expense = resultSet.getDouble("amount");
+                int month = monthMap.get(monthName);
+                monthlyExpenses[month - 1] = expense; // Assuming month is 1-based (1 for January, 2 for February, etc.)
+            }
+        } catch (SQLException e) {
+            System.out.println("Error fetching monthly expenses: " + e.getMessage());
+        }
+        return monthlyExpenses;
     }
 
 }

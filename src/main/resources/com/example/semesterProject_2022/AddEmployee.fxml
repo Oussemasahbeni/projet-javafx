@@ -153,7 +153,7 @@
                 </font>
             </Text>
             <TextField fx:id="phonenofield" layoutX="14.0" layoutY="94.0" onMouseClicked="#reset" styleClass="CustomFields" stylesheets="@CSS/Main_App.css" />
-            <Text fill="WHITE" layoutX="210.0" layoutY="86.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NIC No.">
+            <Text fill="WHITE" layoutX="210.0" layoutY="86.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CIN No.">
                 <font>
                     <Font size="10.0" />
                 </font>

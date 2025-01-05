@@ -1,13 +1,12 @@
 package com.example.semesterProject_2022;
 
 import database.DatabaseFunctions;
+import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
-import java.io.IOException;
 
 public class Main extends Application {
 
@@ -17,6 +16,8 @@ public class Main extends Application {
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
         stage.initStyle(StageStyle.UNDECORATED);
+        stage.setWidth(1280);  // Set the desired width
+        stage.setHeight(720);
         stage.show();
         stage.centerOnScreen();
     }
