@@ -1,9 +1,9 @@
 package com.esprit.hitgym.controller.auth;
 
 import com.esprit.hitgym.GeneralFunctions;
+import com.esprit.hitgym.SecurityUtil;
 import com.esprit.hitgym.db.DatabaseFunctions;
 import com.esprit.hitgym.helpers.Email;
-import com.esprit.hitgym.helpers.Password;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -104,8 +104,9 @@ public class ForgetPassword_Controller {
             resetPassword.setStyle(errorStyle);
             cResetPassword.setStyle(errorStyle);
         } else if (resetPasswordValidation.getText().equals("")) {
-            String[] hashedPassword;
-            hashedPassword = Password.makeFinalPassword(password);
+
+            var hashedPassword = SecurityUtil.hashPassword(password);
+
             DatabaseFunctions.updateCustomerPassword(userEmail, hashedPassword);
 /*
             System.out.println(userEmail);
@@ -132,8 +133,9 @@ public class ForgetPassword_Controller {
             resetPassword.setStyle(errorStyle);
             cResetPassword.setStyle(errorStyle);
         } else if (resetPasswordValidation.getText().equals("")) {
-            String[] hashedPassword;
-            hashedPassword = Password.makeFinalPassword(password);
+
+            var hashedPassword = SecurityUtil.hashPassword(password);
+
             DatabaseFunctions.updateEmployeePassword(userEmail, hashedPassword);
             close();
         }

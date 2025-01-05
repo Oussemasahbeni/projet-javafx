@@ -1,5 +1,6 @@
 package com.esprit.hitgym.helpers;
 
+import com.esprit.hitgym.SecurityUtil;
 import com.esprit.hitgym.db.DatabaseFunctions;
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -39,36 +40,24 @@ public class Password {
     }
 
     public static boolean verifyPassword(String customerUsernameEmail, String enteredPassword) {
-
         try {
-
             String[] userSaltPassword = new String[2];
-            int i = 0;
 
             if (isCustomerOrEmployee.equals("customer")) {
-                for (String s : DatabaseFunctions.getUserPassword(customerUsernameEmail)) {
-                    userSaltPassword[i] = s;
-                    i++;
-                }
+                userSaltPassword[0] = DatabaseFunctions.getUserPassword(customerUsernameEmail);
             } else if (isCustomerOrEmployee.equals("employee")) {
-                for (String s : DatabaseFunctions.getEmployeePassword(customerUsernameEmail)) {
-                    userSaltPassword[i] = s;
-                    i++;
-                }
+                userSaltPassword[0] = DatabaseFunctions.getEmployeePassword(customerUsernameEmail);
             }
 
-            String changedPassword = DigestUtils.sha3_256Hex(enteredPassword);
+            String storedPasswordHash = userSaltPassword[0];
 
-            changedPassword = changedPassword + userSaltPassword[0];
-
-            if (changedPassword.equals(userSaltPassword[1])) {
+            if (SecurityUtil.checkPassword(enteredPassword, storedPasswordHash)) {
                 System.out.println("Access granted.");
                 return true;
             } else {
-                System.out.println("wrong password");
+                System.out.println("Wrong password");
                 return false;
             }
-
         } catch (Exception e) {
             System.out.println(e);
         }

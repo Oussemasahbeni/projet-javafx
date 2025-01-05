@@ -127,7 +127,7 @@ public class LogIn_Form_Controller {
             PassField.setStyle(errorStyle);
             PassField.setText("");
         } else if (!newLogin.checkUsernameEmail() && newLogin.userLoggedInStatus() && epValidation.getText().equals("") && passwordValidation.getText().equals("")) {
-            
+            System.out.println("Admin Logged In");
             new GeneralFunctions().switchSceneFXHelper(e, "AdminPanel.fxml");
 
         }

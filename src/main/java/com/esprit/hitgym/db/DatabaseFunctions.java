@@ -5,6 +5,7 @@ import com.esprit.hitgym.controller.employees.EmployeesPanel_Controller;
 import com.esprit.hitgym.helpers.CustomDate;
 import com.esprit.hitgym.helpers.Login;
 import com.esprit.hitgym.model.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -38,15 +39,14 @@ public class DatabaseFunctions {
         return true;
     }
 
-    public static boolean saveToDb(Customer customer) {
-
+    public static boolean saveToDb(@NotNull Customer customer) {
         PreparedStatement queryStatement = null;
 
         try {
             queryStatement = dbConnection.prepareStatement("""
-                    insert into customers (id, first_name, last_name, email, phone_number, password, username, gender, weight, dob,
-                    monthly_plan, cin, is_active, salt, address)
-                    values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);""");
+                    INSERT INTO customers (id, first_name, last_name, email, phone_number, password, username, gender, weight, dob,
+                    monthly_plan, cin, is_active, address)
+                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);""");
 
             queryStatement.setInt(1, customer.getCustomerId());
             queryStatement.setString(2, customer.getFirstName());
@@ -61,8 +61,7 @@ public class DatabaseFunctions {
             queryStatement.setInt(11, customer.getMonthlyPlan());
             queryStatement.setString(12, customer.getCinNumber());
             queryStatement.setBoolean(13, false);
-            queryStatement.setString(14, customer.getPasswordSalt());
-            queryStatement.setString(15, customer.getAddress());
+            queryStatement.setString(14, customer.getAddress());
             queryStatement.executeUpdate();
             return true;
 
@@ -70,7 +69,6 @@ public class DatabaseFunctions {
             System.out.println("Error! Could not run query: " + e);
             return false;
         }
-
     }
 
     public static boolean saveToDb(Transaction transaction) {
@@ -100,13 +98,12 @@ public class DatabaseFunctions {
     }
 
     public static boolean saveToDb(Employee employee) {
-
         PreparedStatement queryStatement = null;
 
         try {
             queryStatement = dbConnection.prepareStatement("""
-                    INSERT INTO employees (id, first_name, last_name, designation, cin_number, salary, gender, phone_number, joining_date, username, password, salt, access,email)
-                    VALUE (?,?,?,?,?,?,?,?,?,?,?,?,?,?);""");
+                    INSERT INTO employees (id, first_name, last_name, designation, cin_number, salary, gender, phone_number, joining_date, username, password, access, email)
+                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);""");
 
             queryStatement.setInt(1, employee.getId());
             queryStatement.setString(2, employee.getFirstName());
@@ -119,9 +116,8 @@ public class DatabaseFunctions {
             queryStatement.setDate(9, CustomDate.getCurrentDate());
             queryStatement.setString(10, employee.getUserName());
             queryStatement.setString(11, employee.getPassword());
-            queryStatement.setString(12, employee.getSalt());
-            queryStatement.setInt(13, employee.getAccess());
-            queryStatement.setString(14, employee.getEmail());
+            queryStatement.setInt(12, employee.getAccess());
+            queryStatement.setString(13, employee.getEmail());
 
             queryStatement.executeUpdate();
             return true;
@@ -130,7 +126,6 @@ public class DatabaseFunctions {
             System.out.println("Error! Could not run query: " + e);
             return false;
         }
-
     }
 
     public static boolean saveToDb(Expense expense, Integer fkEmployeeId) {
@@ -290,26 +285,24 @@ public class DatabaseFunctions {
         return true;
     }
 
-    public static void updateCustomerPassword(String email, String[] password) {
+    public static void updateCustomerPassword(String email, String password) {
         PreparedStatement queryStatement = null;
         try {
-            queryStatement = dbConnection.prepareStatement("UPDATE customers SET password = ?, salt = ? WHERE email = ?");
-            queryStatement.setString(1, password[1]);
-            queryStatement.setString(2, password[0]);
-            queryStatement.setString(3, email);
+            queryStatement = dbConnection.prepareStatement("UPDATE customers SET password = ? WHERE email = ?");
+            queryStatement.setString(1, password);
+            queryStatement.setString(2, email);
             queryStatement.executeUpdate();
         } catch (Exception e) {
             System.out.println("Error: " + e);
         }
     }
 
-    public static void updateEmployeePassword(String email, String[] password) {
+    public static void updateEmployeePassword(String email, String password) {
         PreparedStatement queryStatement = null;
         try {
-            queryStatement = dbConnection.prepareStatement("UPDATE employees SET password = ?, salt = ? WHERE email = ?");
-            queryStatement.setString(1, password[1]);
-            queryStatement.setString(2, password[0]);
-            queryStatement.setString(3, email);
+            queryStatement = dbConnection.prepareStatement("UPDATE employees SET password = ? WHERE email = ?");
+            queryStatement.setString(1, password);
+            queryStatement.setString(2, email);
             queryStatement.executeUpdate();
         } catch (Exception e) {
             System.out.println("Error: " + e);
@@ -626,20 +619,18 @@ public class DatabaseFunctions {
         return totalMonthlyExpense;
     }
 
-    public static ArrayList<String> getUserPassword(String customerUsernameEmail) {
-
-        ArrayList<String> saltPassArray = new ArrayList<>();
+    public static String getUserPassword(String customerUsernameEmail) {
+        String password = null;
 
         switch (Login.queryOption) {
             case "username" -> {
                 try {
-                    PreparedStatement queryStatement = dbConnection.prepareStatement("SELECT * FROM customers WHERE current_status = true AND username = ?");
+                    PreparedStatement queryStatement = dbConnection.prepareStatement("SELECT password FROM customers WHERE current_status = true AND username = ?");
                     queryStatement.setString(1, customerUsernameEmail);
                     ResultSet resultSet = queryStatement.executeQuery();
 
-                    while (resultSet.next()) {
-                        saltPassArray.add(resultSet.getString("salt"));
-                        saltPassArray.add(resultSet.getString("password"));
+                    if (resultSet.next()) {
+                        password = resultSet.getString("password");
                     }
 
                 } catch (SQLException e) {
@@ -649,15 +640,13 @@ public class DatabaseFunctions {
 
             case "email" -> {
                 try {
-                    PreparedStatement queryStatement = dbConnection.prepareStatement("SELECT * FROM customers WHERE current_status = true AND email = ?");
+                    PreparedStatement queryStatement = dbConnection.prepareStatement("SELECT password FROM customers WHERE current_status = true AND email = ?");
                     queryStatement.setString(1, customerUsernameEmail);
                     ResultSet resultSet = queryStatement.executeQuery();
 
-                    while (resultSet.next()) {
-                        saltPassArray.add(resultSet.getString("salt"));
-                        saltPassArray.add(resultSet.getString("password"));
+                    if (resultSet.next()) {
+                        password = resultSet.getString("password");
                     }
-
 
                 } catch (SQLException e) {
                     System.out.println("Error in retrieving customer: " + e);
@@ -665,51 +654,45 @@ public class DatabaseFunctions {
             }
         }
 
-        return saltPassArray;
-
+        return password;
     }
 
-    public static ArrayList<String> getEmployeePassword(String employeeUsernameEmail) {
-
-        ArrayList<String> saltPassArray = new ArrayList<>();
+    public static String getEmployeePassword(String employeeUsernameEmail) {
+        String password = null;
 
         switch (Login.queryOption) {
             case "username" -> {
                 try {
-                    PreparedStatement queryStatement = dbConnection.prepareStatement("SELECT * FROM employees WHERE username = ?");
+                    PreparedStatement queryStatement = dbConnection.prepareStatement("SELECT password FROM employees WHERE username = ?");
                     queryStatement.setString(1, employeeUsernameEmail);
                     ResultSet resultSet = queryStatement.executeQuery();
 
-                    while (resultSet.next()) {
-                        saltPassArray.add(resultSet.getString("salt"));
-                        saltPassArray.add(resultSet.getString("password"));
+                    if (resultSet.next()) {
+                        password = resultSet.getString("password");
                     }
 
                 } catch (SQLException e) {
-                    System.out.println("Error in retrieving customer: " + e);
+                    System.out.println("Error in retrieving employee: " + e);
                 }
             }
 
             case "email" -> {
                 try {
-                    PreparedStatement queryStatement = dbConnection.prepareStatement("SELECT * FROM employees WHERE email = ?");
+                    PreparedStatement queryStatement = dbConnection.prepareStatement("SELECT password FROM employees WHERE email = ?");
                     queryStatement.setString(1, employeeUsernameEmail);
                     ResultSet resultSet = queryStatement.executeQuery();
 
-                    while (resultSet.next()) {
-                        saltPassArray.add(resultSet.getString("salt"));
-                        saltPassArray.add(resultSet.getString("password"));
+                    if (resultSet.next()) {
+                        password = resultSet.getString("password");
                     }
 
-
                 } catch (SQLException e) {
-                    System.out.println("Error in retrieving customer: " + e);
+                    System.out.println("Error in retrieving employee: " + e);
                 }
             }
         }
 
-        return saltPassArray;
-
+        return password;
     }
 
     public static ArrayList<String> getAllUsernames() {

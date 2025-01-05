@@ -1,11 +1,11 @@
 package com.esprit.hitgym.controller.auth;
 
 import com.esprit.hitgym.GeneralFunctions;
+import com.esprit.hitgym.SecurityUtil;
 import com.esprit.hitgym.controller.LoadingScreen_Controller;
 import com.esprit.hitgym.db.DatabaseFunctions;
 import com.esprit.hitgym.helpers.CustomDate;
 import com.esprit.hitgym.helpers.Email;
-import com.esprit.hitgym.helpers.Password;
 import com.esprit.hitgym.helpers.Username;
 import com.esprit.hitgym.model.Customer;
 import com.esprit.hitgym.model.Transaction;
@@ -277,12 +277,11 @@ public class SignUp_Controller {
         }
         if (bankNameValidation.getText().equals("") && packageValidation.getText().equals("") && tilIDValidation.getText().equals("") && accountNameValidation.getText().equals("")) {
 
-            String[] tempArr;
-            tempArr = Password.makeFinalPassword(userPassword);
+            var hashedPassword = SecurityUtil.hashPassword(userPassword);
             // for id generation, use "customer" for getting customer id
             // for id generation, use "transaction" for getting transaction id
 
-            Customer customer = new Customer(firstName, lastName, emailField, gender, phoneNumber, userName, tempArr[1], cin, userAddress, dob.toString(), userWeight, monthlyPlan, DatabaseFunctions.generateId("customers"), tempArr[0]);
+            Customer customer = new Customer(firstName, lastName, emailField, gender, phoneNumber, userName, hashedPassword, cin, userAddress, dob.toString(), userWeight, monthlyPlan, DatabaseFunctions.generateId("customers"));
             DatabaseFunctions.saveToDb(customer);
 
             Transaction transaction = new Transaction(DatabaseFunctions.generateId("transactions"), CustomDate.getCurrentDate(), monthlyPlan, tilID, nameOfBank, userBankAccountName, customer.getCustomerId(), false);
@@ -291,8 +290,6 @@ public class SignUp_Controller {
 //            Email newEmail = new Email();
 //            newEmail.sendWelcomeEmail(customer.getEmail(), customer.getFirstName() + " " + customer.getLastName());
 
-            tempArr[0] = " ";
-            tempArr[1] = " ";
 
             new GeneralFunctions().switchScene(e, "SignUp_Prompt.fxml");
         }
