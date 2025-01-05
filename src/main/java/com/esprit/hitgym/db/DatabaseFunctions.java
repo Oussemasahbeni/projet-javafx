@@ -29,6 +29,23 @@ public class DatabaseFunctions {
 
     }
 
+    private static Map<String, Integer> getMonthMap() {
+        Map<String, Integer> monthMap = new HashMap<>();
+        monthMap.put("January", 1);
+        monthMap.put("February", 2);
+        monthMap.put("March", 3);
+        monthMap.put("April", 4);
+        monthMap.put("May", 5);
+        monthMap.put("June", 6);
+        monthMap.put("July", 7);
+        monthMap.put("August", 8);
+        monthMap.put("September", 9);
+        monthMap.put("October", 10);
+        monthMap.put("November", 11);
+        monthMap.put("December", 12);
+        return monthMap;
+    }
+
     public static boolean makeConnection() {
         try {
             dbConnection = DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
@@ -1013,14 +1030,16 @@ public class DatabaseFunctions {
     // get monthly revenues and expenses
     public static double[] getMonthlyRevenues() {
         double[] monthlyRevenues = new double[12];
-        String query = "SELECT month, revenue FROM monthly_revenues ORDER BY month";
+        String query = "SELECT for_month, amount FROM revenues ORDER BY for_month";
 
         try (PreparedStatement statement = dbConnection.prepareStatement(query);
              ResultSet resultSet = statement.executeQuery()) {
 
             while (resultSet.next()) {
-                int month = resultSet.getInt("month");
-                double revenue = resultSet.getDouble("revenue");
+                String monthName = resultSet.getString("for_month");
+                double revenue = resultSet.getDouble("amount");
+                System.out.println("revenue: " + revenue);
+                int month = getMonthMap().get(monthName);
                 monthlyRevenues[month - 1] = revenue; // Assuming month is 1-based (1 for January, 2 for February, etc.)
             }
         } catch (SQLException e) {
@@ -1034,28 +1053,13 @@ public class DatabaseFunctions {
         double[] monthlyExpenses = new double[12];
         String query = "SELECT month, amount FROM expenses ORDER BY month";
 
-        // Map month names to their corresponding numerical values
-        Map<String, Integer> monthMap = new HashMap<>();
-        monthMap.put("January", 1);
-        monthMap.put("February", 2);
-        monthMap.put("March", 3);
-        monthMap.put("April", 4);
-        monthMap.put("May", 5);
-        monthMap.put("June", 6);
-        monthMap.put("July", 7);
-        monthMap.put("August", 8);
-        monthMap.put("September", 9);
-        monthMap.put("October", 10);
-        monthMap.put("November", 11);
-        monthMap.put("December", 12);
-
         try (PreparedStatement statement = dbConnection.prepareStatement(query);
              ResultSet resultSet = statement.executeQuery()) {
 
             while (resultSet.next()) {
                 String monthName = resultSet.getString("month");
                 double expense = resultSet.getDouble("amount");
-                int month = monthMap.get(monthName);
+                int month = getMonthMap().get(monthName);
                 monthlyExpenses[month - 1] = expense; // Assuming month is 1-based (1 for January, 2 for February, etc.)
             }
         } catch (SQLException e) {

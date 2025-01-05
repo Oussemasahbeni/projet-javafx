@@ -194,7 +194,7 @@
                                                     </top>
                                                     <bottom>
                                                         <Text fx:id="monthlyMembers" fill="#232f42" strokeType="OUTSIDE"
-                                                              strokeWidth="0.0" text="Monthly Revenue"
+                                                              strokeWidth="0.0" text="Monthly Revenue In TND"
                                                               BorderPane.alignment="CENTER">
                                                             <BorderPane.margin>
                                                                 <Insets bottom="50.0"/>
@@ -209,7 +209,7 @@
                                                                     BorderPane.alignment="CENTER">
                                                             <children>
                                                                 <Text fill="#232f42" layoutX="35.0" layoutY="49.0"
-                                                                      strokeType="OUTSIDE" strokeWidth="0.0" text="TND"
+                                                                      strokeType="OUTSIDE" strokeWidth="0.0"
                                                                       AnchorPane.leftAnchor="35.0"
                                                                       AnchorPane.topAnchor="26.72265625">
                                                                     <font>
@@ -263,7 +263,7 @@
                                                     </center>
                                                     <bottom>
                                                         <Text fill="#232f42" strokeType="OUTSIDE" strokeWidth="0.0"
-                                                              text="Monthly Expense" BorderPane.alignment="CENTER">
+                                                              text="Monthly Expense In TND" BorderPane.alignment="CENTER">
                                                             <BorderPane.margin>
                                                                 <Insets bottom="50.0"/>
                                                             </BorderPane.margin>
@@ -295,7 +295,7 @@
                                                                     BorderPane.alignment="CENTER">
                                                             <children>
                                                                 <Text fill="#232f42" layoutX="35.0" layoutY="49.0"
-                                                                      strokeType="OUTSIDE" strokeWidth="0.0" text="TND"
+                                                                      strokeType="OUTSIDE" strokeWidth="0.0"
                                                                       AnchorPane.leftAnchor="25.0"
                                                                       AnchorPane.topAnchor="24.72265625">
                                                                     <font>
@@ -320,7 +320,7 @@
                                                     </center>
                                                     <bottom>
                                                         <Text fill="#232f42" strokeType="OUTSIDE" strokeWidth="0.0"
-                                                              text="Monthly Profit" BorderPane.alignment="CENTER">
+                                                              text="Monthly Profit In TND" BorderPane.alignment="CENTER">
                                                             <BorderPane.margin>
                                                                 <Insets bottom="50.0" top="-20.0"/>
                                                             </BorderPane.margin>

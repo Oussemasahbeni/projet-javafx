@@ -1,6 +1,9 @@
 package com.esprit.hitgym.controller.dashboard;
 
 import com.esprit.hitgym.db.DatabaseFunctions;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -12,9 +15,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 
 public class DashboardPanel_Controller implements Initializable {
 
@@ -198,10 +198,19 @@ public class DashboardPanel_Controller implements Initializable {
             monthlyProfits[i] = monthlyRevenues[i] - monthlyExpenses[i];
         }
 
-        // Update the text fields
-        monthlyRevenue.setText(String.valueOf(monthlyRevenues[11])); // Assuming the last month is the current month
-        monthlyExpense.setText(String.valueOf(monthlyExpenses[11]));
-        monthlyprofit.setText(String.valueOf(monthlyProfits[11]));
+        // Calculate the sum of the arrays
+        double totalRevenue = Arrays.stream(monthlyRevenues).sum();
+        double totalExpense = Arrays.stream(monthlyExpenses).sum();
+        double totalProfit = totalRevenue - totalExpense;
+
+        // Print the arrays for debugging
+        System.out.println("monthlyExpenses: " + Arrays.toString(monthlyExpenses));
+        System.out.println("monthlyRevenues: " + Arrays.toString(monthlyRevenues));
+
+        // Update the text fields with the sums
+        monthlyRevenue.setText(String.valueOf(totalRevenue));
+        monthlyExpense.setText(String.valueOf(totalExpense));
+        monthlyprofit.setText(String.valueOf(totalProfit));
 
         // Update the members card
         for (int i = 1; i < 3; i++) {

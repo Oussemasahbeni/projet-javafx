@@ -17,7 +17,7 @@ public class Main extends Application {
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
         stage.initStyle(StageStyle.UNDECORATED);
-        stage.setWidth(1280);  // Set the desired width
+        stage.setWidth(1280);
         stage.setHeight(720);
         stage.show();
         stage.centerOnScreen();
