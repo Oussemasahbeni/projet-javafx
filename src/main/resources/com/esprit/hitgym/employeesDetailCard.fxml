@@ -8,7 +8,7 @@
 <AnchorPane fx:id="Main" onMouseDragged="#dragWindow" onMousePressed="#pressedWindow" prefHeight="513.0"
             prefWidth="327.0" styleClass="background" stylesheets="@CSS/Main_App.css"
             xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.esprit.hitgym.EmployeesDetailCard_Controller">
+            fx:controller="com.esprit.hitgym.controller.employees.EmployeesDetailCard_Controller">
     <children>
         <Text fill="WHITE" layoutX="80.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0"
               text="Employee Detail Card" textAlignment="CENTER">

@@ -1,6 +1,7 @@
 package com.esprit.hitgym;
 
 import com.esprit.hitgym.ResizeHelper.FXResizeHelper;
+import com.esprit.hitgym.controller.LoadingScreen_Controller;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;

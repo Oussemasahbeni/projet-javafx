@@ -9,7 +9,7 @@
 <?import javafx.scene.text.*?>
 <AnchorPane fx:id="pane" onMouseDragged="#dragged" onMousePressed="#pressed" prefHeight="525.0" prefWidth="354.0"
             stylesheets="@CSS/LoginSignUp.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.esprit.hitgym.LoginSignUp_Controller">
+            fx:controller="com.esprit.hitgym.controller.auth.LoginSignUp_Controller">
     <children>
         <Text fx:id="h1" fill="#ffffff" layoutX="80.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0"
               text="WELCOME" textAlignment="CENTER" wrappingWidth="186.35888671875">

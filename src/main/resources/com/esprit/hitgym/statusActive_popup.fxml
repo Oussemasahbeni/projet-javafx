@@ -6,7 +6,8 @@
 <?import javafx.scene.text.Text?>
 <?import java.lang.String?>
 <AnchorPane prefHeight="182.0" prefWidth="268.0" stylesheets="@CSS/Main_App.css" xmlns="http://javafx.com/javafx/19"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.hitgym.StatusActivePopup_Controller">
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.esprit.hitgym.controller.account.StatusActivePopup_Controller">
     <children>
         <Text layoutX="49.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0"
               text="Status has been activated, please press okay and refresh the table" textAlignment="CENTER"

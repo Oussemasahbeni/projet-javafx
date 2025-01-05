@@ -8,7 +8,7 @@
 <?import javafx.scene.text.*?>
 <AnchorPane fx:id="anchorpane_login" onMouseDragged="#dragged" onMousePressed="#pressed" prefHeight="417.0"
             prefWidth="658.0" stylesheets="@CSS/Login.css" xmlns="http://javafx.com/javafx/19"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.hitgym.LogIn_Form_Controller">
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.hitgym.controller.auth.LogIn_Form_Controller">
     <children>
         <ImageView fitHeight="433.0" fitWidth="313.0" layoutX="355.0" pickOnBounds="true" preserveRatio="true">
             <image>

@@ -22,6 +22,7 @@ public class Login {
 
         switch (queryOption) {
             case "email" -> {
+
                 boolean tmp = Email.checkEmail(emailUsername);
                 if (tmp) {
                     System.out.println("Email exists");

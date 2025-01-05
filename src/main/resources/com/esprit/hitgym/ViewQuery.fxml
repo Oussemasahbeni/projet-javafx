@@ -8,7 +8,7 @@
 <AnchorPane fx:id="Main" onMouseDragged="#dragWindow" onMousePressed="#pressedWindow" prefHeight="500.0"
             prefWidth="500.0" styleClass="background" stylesheets="@CSS/Main_App.css"
             xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.esprit.hitgym.QueryView">
+            fx:controller="com.esprit.hitgym.view.QueryView">
     <children>
         <Text fill="WHITE" layoutX="220.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Query"
               textAlignment="CENTER">

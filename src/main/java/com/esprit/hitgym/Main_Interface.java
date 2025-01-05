@@ -1,5 +1,6 @@
 package com.esprit.hitgym;
 
+import com.esprit.hitgym.controller.dashboard.DashboardPanel_Controller;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

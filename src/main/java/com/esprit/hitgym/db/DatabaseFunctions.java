@@ -1,7 +1,7 @@
 package com.esprit.hitgym.db;
 
-import com.esprit.hitgym.CustomerPanel_Controller;
-import com.esprit.hitgym.EmployeesPanel_Controller;
+import com.esprit.hitgym.controller.customer.CustomerPanel_Controller;
+import com.esprit.hitgym.controller.employees.EmployeesPanel_Controller;
 import com.esprit.hitgym.helpers.CustomDate;
 import com.esprit.hitgym.helpers.Login;
 import com.esprit.hitgym.model.*;

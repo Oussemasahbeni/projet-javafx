@@ -9,7 +9,8 @@
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <AnchorPane prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/19"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.hitgym.CustomerPanel_Controller">
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.esprit.hitgym.controller.customer.CustomerPanel_Controller">
     <children>
         <StackPane fx:id="stackPane" layoutX="185.0" layoutY="35.0" prefHeight="583.0" prefWidth="1044.0"
                    AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="185.0" AnchorPane.rightAnchor="-205.0"

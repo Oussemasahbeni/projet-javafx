@@ -1,6 +1,6 @@
 package com.esprit.hitgym.helpers;
 
-import com.esprit.hitgym.ForgetPassword_Controller;
+import com.esprit.hitgym.controller.auth.ForgetPassword_Controller;
 import com.esprit.hitgym.db.DatabaseFunctions;
 import com.mailjet.client.ClientOptions;
 import com.mailjet.client.MailjetClient;
@@ -169,14 +169,13 @@ public class Email {
 
     }
 
+
     public static boolean checkEmail(String email) {
 
         ArrayList<String> allEmails = DatabaseFunctions.getAllEmails();
 
         int i = 0;
 
-        System.out.println(DatabaseFunctions.customersListCount);
-        System.out.println(DatabaseFunctions.employeesListCount);
 
         for (String e : allEmails) {
 
@@ -185,7 +184,7 @@ public class Email {
                     Password.isCustomerOrEmployee = "customer";
                     System.out.println("Customer logging in");
                     return true;
-                } else if (i > DatabaseFunctions.employeesListCount) {
+                } else if (i >= DatabaseFunctions.employeesListCount) {
                     Password.isCustomerOrEmployee = "employee";
                     System.out.println("Employee Logging in");
                     System.out.println("Error here");

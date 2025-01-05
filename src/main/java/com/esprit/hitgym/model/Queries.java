@@ -1,7 +1,11 @@
 package com.esprit.hitgym.model;
 
-import com.esprit.hitgym.*;
+import com.esprit.hitgym.GeneralFunctions;
+import com.esprit.hitgym.controller.queries.QueriesPanel_Controller;
+import com.esprit.hitgym.controller.queries.QueriesReply_Controller;
+import com.esprit.hitgym.controller.queries.QueryMenuButton;
 import com.esprit.hitgym.helpers.CustomDate;
+import com.esprit.hitgym.view.QueryView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.paint.Paint;
 

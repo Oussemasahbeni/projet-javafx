@@ -13,7 +13,7 @@
 <AnchorPane fx:id="Main" onMouseDragged="#dragWindow" onMousePressed="#pressedWindow" prefHeight="359.0"
             prefWidth="653.0" styleClass="background" stylesheets="@CSS/Main_App.css"
             xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.esprit.hitgym.AddEmployeeController">
+            fx:controller="com.esprit.hitgym.controller.employees.AddEmployeeController">
     <ImageView fitHeight="424.0" fitWidth="237.0" pickOnBounds="true" preserveRatio="true">
         <Image url="@Images/daniel-apodaca-WdoQio6HPVA-unsplash%201.png"/>
     </ImageView>

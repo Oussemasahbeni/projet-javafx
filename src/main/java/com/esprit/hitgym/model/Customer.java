@@ -1,9 +1,9 @@
 package com.esprit.hitgym.model;
 
-import com.esprit.hitgym.CustomMenuButton;
-import com.esprit.hitgym.MembersDetailCard_Controller;
-import com.esprit.hitgym.MembersPanel_Controller;
+import com.esprit.hitgym.controller.member.MembersDetailCard_Controller;
+import com.esprit.hitgym.controller.member.MembersPanel_Controller;
 import com.esprit.hitgym.db.DatabaseFunctions;
+import com.esprit.hitgym.view.CustomMenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.paint.Paint;
 
