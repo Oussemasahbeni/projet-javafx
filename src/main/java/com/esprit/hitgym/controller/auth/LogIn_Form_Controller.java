@@ -68,7 +68,7 @@ public class LogIn_Form_Controller {
             epValidation.setText("! Email cannot be empty");
             EmailField.setStyle(errorStyle);
             EmailField.setText("");
-        } else if (newLogin.checkUsernameEmail()) {
+        } else if (newLogin.checkUsernameEmail("customer")) {
             epValidation.setText("! Invalid email or username");
             EmailField.setStyle(errorStyle);
             EmailField.setText("");
@@ -82,7 +82,7 @@ public class LogIn_Form_Controller {
             passwordValidation.setText("! Password Incorrect");
             PassField.setStyle(errorStyle);
             PassField.setText("");
-        } else if (!newLogin.checkUsernameEmail() && newLogin.userLoggedInStatus() && epValidation.getText().equals("") && passwordValidation.getText().equals("")) {
+        } else if (!newLogin.checkUsernameEmail("customer") && newLogin.userLoggedInStatus() && epValidation.getText().equals("") && passwordValidation.getText().equals("")) {
             if (response.isSelected()) {
                 Properties properties = new Properties();
                 properties.setProperty("Username", email);
@@ -104,6 +104,8 @@ public class LogIn_Form_Controller {
 
         email = EmailField.getText();
         password = PassField.getText();
+
+        System.out.println("email fi wost admin login =" + email);
         newLogin.setEmailUsername(email);
         newLogin.setPassword(password);
 
@@ -112,21 +114,16 @@ public class LogIn_Form_Controller {
             epValidation.setText("! Email cannot be empty");
             EmailField.setStyle(errorStyle);
             EmailField.setText("");
-        } else if (newLogin.checkUsernameEmail()) {
-            epValidation.setText("! Invalid email or username");
-            EmailField.setStyle(errorStyle);
-            EmailField.setText("");
         }
 
         if (password.isEmpty() || password.isBlank()) {
             passwordValidation.setText("! Password cannot be empty");
             PassField.setStyle(errorStyle);
             PassField.setText("");
-        } else if (!newLogin.userLoggedInStatus()) {
-            passwordValidation.setText("! Password Incorrect");
-            PassField.setStyle(errorStyle);
-            PassField.setText("");
-        } else if (!newLogin.checkUsernameEmail() && newLogin.userLoggedInStatus() && epValidation.getText().equals("") && passwordValidation.getText().equals("")) {
+        }
+
+
+        if (newLogin.checkUsernameEmail("employee") && newLogin.userLoggedInStatus() && epValidation.getText().isEmpty() && passwordValidation.getText().isEmpty()) {
             System.out.println("Admin Logged In");
             new GeneralFunctions().switchSceneFXHelper(e, "AdminPanel.fxml");
 
@@ -165,7 +162,7 @@ public class LogIn_Form_Controller {
         Login newLogin = new Login();
         newLogin.setEmailUsername(userName);
         newLogin.setPassword(Password);
-        if (!newLogin.checkUsernameEmail() && newLogin.userLoggedInStatus()) {
+        if (!newLogin.checkUsernameEmail("customer") && newLogin.userLoggedInStatus()) {
             new GeneralFunctions().switchScene("CustomerPanel.fxml");
         }
     }
