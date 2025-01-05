@@ -7,7 +7,7 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: "password"
-      MYSQL_DATABASE: "example_db" # Optional: Create a database on startup
+      MYSQL_DATABASE: "gym_db"
     ports:
       - "3306:3306"
     networks:

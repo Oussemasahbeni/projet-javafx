@@ -1,4 +1,4 @@
-module com.example.semesterproject_2022 {
+module com.esprit.semesterproject_2022 {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.sql;
@@ -7,8 +7,9 @@ module com.example.semesterproject_2022 {
     requires AnimateFX;
     requires org.jetbrains.annotations;
 
-    opens com.example.semesterProject_2022 to javafx.fxml;
-    exports com.example.semesterProject_2022;
-    opens model_class to javafx.fxml;
-    exports model_class;
+    opens com.esprit.hitgym to javafx.fxml;
+    exports com.esprit.hitgym;
+
+    exports com.esprit.hitgym.model;
+    opens com.esprit.hitgym.model to javafx.fxml;
 }
