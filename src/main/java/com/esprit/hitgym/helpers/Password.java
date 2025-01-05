@@ -39,17 +39,17 @@ public class Password {
         return passSalt;
     }
 
-    public static boolean verifyPassword(String customerUsernameEmail, String enteredPassword) {
+    public static boolean verifyPassword(String email, String enteredPassword) {
+
+
         try {
-            String[] userSaltPassword = new String[2];
+            String storedPasswordHash = "";
 
             if (isCustomerOrEmployee.equals("customer")) {
-                userSaltPassword[0] = DatabaseFunctions.getUserPassword(customerUsernameEmail);
+                storedPasswordHash = DatabaseFunctions.getUserPassword(email);
             } else if (isCustomerOrEmployee.equals("employee")) {
-                userSaltPassword[0] = DatabaseFunctions.getEmployeePassword(customerUsernameEmail);
+                storedPasswordHash = DatabaseFunctions.getEmployeePassword(email);
             }
-
-            String storedPasswordHash = userSaltPassword[0];
 
             if (SecurityUtil.checkPassword(enteredPassword, storedPasswordHash)) {
                 System.out.println("Access granted.");

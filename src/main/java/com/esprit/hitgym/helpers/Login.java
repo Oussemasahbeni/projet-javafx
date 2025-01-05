@@ -12,7 +12,7 @@ public class Login {
     private boolean logInSuccessful;
     public static String queryOption;
 
-    public boolean checkUsernameEmail() {
+    public boolean checkUsernameEmail(String type) {
 
         if (emailUsername.contains("@")) {
             queryOption = "email";
@@ -23,7 +23,7 @@ public class Login {
         switch (queryOption) {
             case "email" -> {
 
-                boolean tmp = Email.checkEmail(emailUsername);
+                boolean tmp = Email.checkIfCustomerOrEmployee(type);
                 if (tmp) {
                     System.out.println("Email exists");
                     return false;
@@ -46,8 +46,6 @@ public class Login {
     }
 
     public void checkPassword() {
-
-
         if (Password.verifyPassword(emailUsername, password)) {
             logInSuccessful = true;
         }
