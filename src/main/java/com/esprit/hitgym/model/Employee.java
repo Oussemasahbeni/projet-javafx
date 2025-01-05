@@ -22,7 +22,6 @@ public class Employee extends Person {
     //    private AccessLevel accessLevel;
     private int salary;
     private int id;
-    private String salt;
     private int access;
 
     /**/
@@ -77,13 +76,12 @@ public class Employee extends Person {
         this.year = customDate.getYear();
     }
 
-    public Employee(java.sql.Date joiningDate, String firstName, String lastName, String email, String phoneNumber, String cinNumber, String designation, int salary, int id, String gender, String username, String password, String salt) {
+    public Employee(java.sql.Date joiningDate, String firstName, String lastName, String email, String phoneNumber, String cinNumber, String designation, int salary, int id, String gender, String username, String password) {
         super(firstName, lastName, email, gender, phoneNumber, username, password, cinNumber);
         this.designation = designation;
         this.joiningDate = joiningDate;
         this.salary = salary;
         this.id = id;
-        this.salt = salt;
 
         customDate = new CustomDate(joiningDate);
 
@@ -171,13 +169,6 @@ public class Employee extends Person {
         this.joiningDate = joiningDate;
     }
 
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
 
     public int getAccess() {
         return access;

@@ -40,13 +40,6 @@ CREATE TABLE `bmi`
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
 
---
--- Dumping data for table `bmi`
---
-
-INSERT INTO `bmi` (`id`, `weight`, `recorded_date`, `fk_customer_id`, `recorded_month`, `height`, `bmi_value`)
-VALUES (1, 60, '2025-01-20', 1, 'January', 1.65, 22),
-       (2, 75, '2025-01-22', 2, 'January', 1.8, 23.1);
 
 -- --------------------------------------------------------
 
@@ -69,23 +62,12 @@ CREATE TABLE `customers`
     `monthly_plan`   int(11)      DEFAULT NULL,
     `cin`            varchar(20)            NOT NULL,
     `is_active`      tinyint(1)   DEFAULT 1,
-    `salt`           varchar(255) DEFAULT NULL,
     `address`        varchar(255) DEFAULT NULL,
     `current_status` tinyint(1)   DEFAULT 1
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
 
---
--- Dumping data for table `customers`
---
-
-INSERT INTO `customers` (`id`, `first_name`, `last_name`, `email`, `phone_number`, `password`, `username`, `gender`,
-                         `weight`, `dob`, `monthly_plan`, `cin`, `is_active`, `salt`, `address`, `current_status`)
-VALUES (1, 'Alice', 'Brown', 'alice.brown@example.com', '5551234567', 'hashed_password3', 'alicebrown', 'FEMALE',
-        '60kg', '1990-04-25', 1, 'CIN789012', 1, 'salt3', '123 Maple Street', 1),
-       (2, 'Bob', 'Johnson', 'bob.johnson@example.com', '5559876543', 'hashed_password4', 'bobjohnson', 'MALE', '75kg',
-        '1985-08-10', 2, 'CIN345678', 1, 'salt4', '456 Oak Avenue', 1);
 
 -- --------------------------------------------------------
 
@@ -95,38 +77,24 @@ VALUES (1, 'Alice', 'Brown', 'alice.brown@example.com', '5551234567', 'hashed_pa
 
 CREATE TABLE `employees`
 (
-    `id`             int(11)                            NOT NULL,
-    `first_name`     varchar(50)                        NOT NULL,
-    `last_name`      varchar(50)                        NOT NULL,
-    `designation`    enum ('TRAINER','MANAGER','ADMIN') NOT NULL,
-    `cin_number`     varchar(20)                        NOT NULL,
-    `salary`         int(11)      DEFAULT NULL,
-    `gender`         enum ('MALE','FEMALE')             NOT NULL,
-    `phone_number`   varchar(20)  DEFAULT NULL,
-    `joining_date`   date         DEFAULT NULL,
-    `username`       varchar(50)                        NOT NULL,
-    `password`       varchar(255)                       NOT NULL,
-    `salt`           varchar(255) DEFAULT NULL,
-    `access`         int(11)      DEFAULT NULL,
-    `email`          varchar(100)                       NOT NULL,
-    `current_status` tinyint(1)   DEFAULT 1
+    `id`             int(11)                NOT NULL,
+    `first_name`     varchar(50)            NOT NULL,
+    `last_name`      varchar(50)            NOT NULL,
+    `designation`    VARCHAR(50)            NOT NULL,
+    `cin_number`     varchar(20)            NOT NULL,
+    `salary`         int(11)     DEFAULT NULL,
+    `gender`         enum ('MALE','FEMALE') NOT NULL,
+    `phone_number`   varchar(20) DEFAULT NULL,
+    `joining_date`   date        DEFAULT NULL,
+    `username`       varchar(50)            NOT NULL,
+    `password`       varchar(255)           NOT NULL,
+    `access`         int(11)     DEFAULT NULL,
+    `email`          varchar(100)           NOT NULL,
+    `current_status` tinyint(1)  DEFAULT 1
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
 
---
--- Dumping data for table `employees`
---
-
-INSERT INTO `employees` (`id`, `first_name`, `last_name`, `designation`, `cin_number`, `salary`, `gender`,
-                         `phone_number`, `joining_date`, `username`, `password`, `salt`, `access`, `email`,
-                         `current_status`)
-VALUES (1, 'John', 'Doe', 'TRAINER', 'CIN123456', 40000, 'MALE', '1234567890', '2023-01-15', 'johndoe',
-        'hashed_password1', 'salt1', 1, 'john.doe@example.com', 1),
-       (2, 'Jane', 'Smith', 'MANAGER', 'CIN654321', 60000, 'FEMALE', '0987654321', '2022-05-20', 'janesmith',
-        'hashed_password2', 'salt2', 2, 'jane.smith@example.com', 1);
-
--- --------------------------------------------------------
 
 --
 -- Table structure for table `expenses`
@@ -146,16 +114,6 @@ CREATE TABLE `expenses`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
-
---
--- Dumping data for table `expenses`
---
-
-INSERT INTO `expenses` (`id`, `description`, `created_date`, `amount`, `month`, `year`, `fk_employee_id`,
-                        `selected_date`, `current_status`)
-VALUES (1, 'Gym Maintenance', '2025-01-10', 5000, 'January', '2025', 1, '2025-01-09', 1),
-       (2, 'Equipment Purchase', '2025-01-12', 15000, 'January', '2025', 2, '2025-01-11', 1);
-
 -- --------------------------------------------------------
 
 --
@@ -257,19 +215,6 @@ CREATE TABLE `transactions`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
-
---
--- Dumping data for table `transactions`
---
-
-INSERT INTO `transactions` (`id`, `created_date`, `amount`, `transaction_number`, `bank_name`, `account_owner_name`,
-                            `fk_customer_id`, `status`)
-VALUES (1, '2025-01-01', 2000, 'TXN1001', 'Bank A', 'Alice Brown', 1, 0),
-       (2, '2025-01-05', 3000, 'TXN1002', 'Bank B', 'Bob Johnson', 2, 0);
-
---
--- Indexes for dumped tables
---
 
 --
 -- Indexes for table `bmi`
@@ -416,8 +361,7 @@ ALTER TABLE `transactions`
     ADD CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`fk_customer_id`) REFERENCES `customers` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 COMMIT;
 
-ALTER TABLE `employees`
-    MODIFY designation VARCHAR(50) NOT NULL;
+
 
 CREATE PROCEDURE get_ids(IN table_name VARCHAR(255))
 BEGIN

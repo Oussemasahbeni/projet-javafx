@@ -1,9 +1,9 @@
 package com.esprit.hitgym.controller.employees;
 
 import com.esprit.hitgym.GeneralFunctions;
+import com.esprit.hitgym.SecurityUtil;
 import com.esprit.hitgym.db.DatabaseFunctions;
 import com.esprit.hitgym.helpers.Email;
-import com.esprit.hitgym.helpers.Password;
 import com.esprit.hitgym.helpers.Username;
 import com.esprit.hitgym.model.Employee;
 import javafx.fxml.FXML;
@@ -265,10 +265,11 @@ public class AddEmployeeController {
         }
         if (uNameValidation.getText().equals("") && emailValidation.getText().equals("") && passwordValidation.getText().equals("") && salaryValidation.getText().equals("") && designationValidation.getText().equals("") && Boolean.TRUE.equals(apiResponse)) {
             close();
-            String[] tempArr;
-            tempArr = Password.makeFinalPassword(password);
 
-            Employee employee = new Employee(Date.valueOf(joiningDate), fName, lName, userEmail, pNumber, cnic, designation, Integer.parseInt(salary), DatabaseFunctions.generateId("employees"), gender, username, tempArr[1], tempArr[0]);
+            var hashedPassword = SecurityUtil.hashPassword(password);
+
+
+            Employee employee = new Employee(Date.valueOf(joiningDate), fName, lName, userEmail, pNumber, cnic, designation, Integer.parseInt(salary), DatabaseFunctions.generateId("employees"), gender, username, hashedPassword);
             try {
                 System.out.println("Designation: " + designation);
                 DatabaseFunctions.saveToDb(employee);

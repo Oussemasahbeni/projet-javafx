@@ -6,6 +6,7 @@ module com.esprit.semesterproject_2022 {
     requires com.mailjet.api;
     requires AnimateFX;
     requires org.jetbrains.annotations;
+    requires jbcrypt;
 
     opens com.esprit.hitgym to javafx.fxml;
     exports com.esprit.hitgym;

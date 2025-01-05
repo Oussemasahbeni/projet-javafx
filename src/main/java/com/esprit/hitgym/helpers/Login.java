@@ -47,6 +47,7 @@ public class Login {
 
     public void checkPassword() {
 
+
         if (Password.verifyPassword(emailUsername, password)) {
             logInSuccessful = true;
         }

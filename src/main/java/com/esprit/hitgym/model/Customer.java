@@ -19,7 +19,6 @@ public class Customer extends Person implements Comparable {
     private Package monthlyPackage;
     private int customerId;
     private boolean isActive;
-    private String passwordSalt;
     private String Fullname;
     private BMI CustomerBMI;
     private Boolean AdminAcces;
@@ -102,14 +101,13 @@ public class Customer extends Person implements Comparable {
         Id = id;
     }
 
-    public Customer(String firstName, String lastName, String email, String gender, String phoneNumber, String userName, String password, String nicNumber, String address, String dob, String weight, int monthlyPlan, int customerId, String passwordSalt) {
+    public Customer(String firstName, String lastName, String email, String gender, String phoneNumber, String userName, String password, String nicNumber, String address, String dob, String weight, int monthlyPlan, int customerId) {
         super(firstName, lastName, email, gender, phoneNumber, userName, password, nicNumber);
         this.address = address;
         this.dob = dob;
         this.weight = weight;
         this.monthlyPlan = monthlyPlan;
         this.customerId = customerId;
-        this.passwordSalt = passwordSalt;
     }
 
     public Package getMonthlyPackage() {
@@ -172,13 +170,6 @@ public class Customer extends Person implements Comparable {
         isActive = active;
     }
 
-    public String getPasswordSalt() {
-        return passwordSalt;
-    }
-
-    public void setPasswordSalt(String passwordSalt) {
-        this.passwordSalt = passwordSalt;
-    }
 
     public String tolowerfirstname() {
         return getFirstName().toLowerCase();

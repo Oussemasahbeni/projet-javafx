@@ -169,6 +169,18 @@ public class Email {
 
     }
 
+//    public static boolean checkIfCustomerOrEmployee(String type) {
+//        if (type.equals("customer")) {
+//            Password.isCustomerOrEmployee = "customer";
+//            return true;
+//        } else if (type.equals("employee")) {
+//            Password.isCustomerOrEmployee = "employee";
+//
+//            return false;
+//        }
+//        return false;
+//    }
+
 
     public static boolean checkEmail(String email) {
 
