@@ -96,19 +96,19 @@
                                 <Line endX="50.0" layoutX="502.0" layoutY="81.0"/>
                                 <Line endX="50.0" layoutX="502.0" layoutY="141.0"/>
                                 <Line endX="50.0" layoutX="502.0" layoutY="111.0"/>
-                                <Text layoutX="508.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2000">
+                                <Text layoutX="508.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="50">
                                     <font>
                                         <Font name="System Bold" size="13.0"/>
                                     </font>
                                 </Text>
                                 <Text layoutX="508.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                                      text="3000">
+                                      text="70">
                                     <font>
                                         <Font name="System Bold" size="13.0"/>
                                     </font>
                                 </Text>
                                 <Text layoutX="508.0" layoutY="133.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                                      text="4500">
+                                      text="100">
                                     <font>
                                         <Font name="System Bold" size="13.0"/>
                                     </font>

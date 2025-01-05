@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -458,12 +459,17 @@ public class DatabaseFunctions {
             resultSet = queryStatement.executeQuery();
 
             while (resultSet.next()) {
+               System.out.println(resultSet.getInt(1));
 
                 tempArr.add(resultSet.getInt(1));
 
             }
 
             for (int i : tempArr) {
+        System.out.println("i: " + i);
+        System.out.println("package1: " + package1.getAmount());
+        System.out.println("package2: " + package2.getAmount());
+        System.out.println("package3: " + package3.getAmount());
                 if (i == package1.getAmount()) {
                     allMemberships[0] += 1;
                 } else if (i == package2.getAmount()) {
@@ -476,7 +482,7 @@ public class DatabaseFunctions {
         } catch (SQLException e) {
             System.out.println("Error in getting memberships: " + e);
         }
-
+        System.out.println(Arrays.toString(allMemberships));
         return allMemberships;
     }
 

@@ -115,19 +115,19 @@
                                             </font>
                                         </Text>
                                         <Text fill="#ffffffb2" layoutX="246.0" layoutY="99.5693359375"
-                                              strokeType="OUTSIDE" strokeWidth="0.0" text="20TND/=Incl. Tax">
+                                              strokeType="OUTSIDE" strokeWidth="0.0" text="50TND/=Incl. Tax">
                                             <font>
                                                 <Font name="System Bold" size="14.0"/>
                                             </font>
                                         </Text>
                                         <Text fill="#ffffffb2" layoutX="246.0" layoutY="124.5693359375"
-                                              strokeType="OUTSIDE" strokeWidth="0.0" text="30TND/=Incl. Tax">
+                                              strokeType="OUTSIDE" strokeWidth="0.0" text="70TND/=Incl. Tax">
                                             <font>
                                                 <Font name="System Bold" size="14.0"/>
                                             </font>
                                         </Text>
                                         <Text fill="#ffffffb2" layoutX="246.0" layoutY="151.5693359375"
-                                              strokeType="OUTSIDE" strokeWidth="0.0" text="50TND/=Incl. Tax">
+                                              strokeType="OUTSIDE" strokeWidth="0.0" text="100TND/=Incl. Tax">
                                             <font>
                                                 <Font name="System Bold" size="14.0"/>
                                             </font>

@@ -138,6 +138,8 @@ public class RevenuePanel_Controller implements Initializable {
             int starterMemberships = numberOfMemberships[1];
             int proMemberships = numberOfMemberships[2];
 
+            System.out.println("beginnerMemberships: " + beginnerMemberships);
+
             int totalCurrentExpense = DatabaseFunctions.getCurrentMonthExpense();
 
             //TODO number of beginner db will set here
@@ -147,13 +149,13 @@ public class RevenuePanel_Controller implements Initializable {
             //TODO number of pro db will set here
             noOfProMemberships.setText(String.valueOf(proMemberships));
             //TODO replace 20 with number of beginner db
-            int beginnerRevenue = beginnerMemberships * 2000;
+            int beginnerRevenue = beginnerMemberships * 50;
             multBegginer.setText(String.valueOf(beginnerRevenue));
             //TODO replace 30 with number of starter db
-            int starterRevenue = starterMemberships * 3000;
+            int starterRevenue = starterMemberships * 70;
             multStarter.setText(String.valueOf(starterRevenue));
             //TODO replace 30 with number of pro db
-            int proRevenue = proMemberships * 4500;
+            int proRevenue = proMemberships * 100;
             multPro.setText(String.valueOf(proRevenue));
             int totalRevenue = beginnerRevenue + starterRevenue + proRevenue;
             totalMonthlyRevenue.setText(String.valueOf(totalRevenue));
