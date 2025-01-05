@@ -13,7 +13,7 @@ public class DatabaseFunctions {
 
     private static final String dbUrl = "jdbc:mysql://localhost:3306/gym_db";
     private static final String dbUsername = "root";
-    private static final String dbPassword = "your_secure_password";
+    private static final String dbPassword = "";
 
 
     private static Connection dbConnection = null;
