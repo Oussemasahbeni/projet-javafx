@@ -21,7 +21,7 @@ public class GeneralFunctions {
     private static int Nan_counter = 0;
     Rectangle2D dim = Screen.getPrimary().getVisualBounds();
 
-
+    //function switchscene
     public void switchScene(Event e, String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(fxml));
         obj.stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
