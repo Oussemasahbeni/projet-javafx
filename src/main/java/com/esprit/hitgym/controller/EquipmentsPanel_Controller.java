@@ -14,4 +14,14 @@ public class EquipmentsPanel_Controller {
 
     }
 
+    @FXML
+    void resetText(ActionEvent event) {
+        texttbchanged.setText("Default Text");
+        logAction("Text reset to default.");
+    }
+
+    private void logAction(String message) {
+        System.out.println("[EquipmentsPanel_Controller] " + message);
+    }
+
 }
