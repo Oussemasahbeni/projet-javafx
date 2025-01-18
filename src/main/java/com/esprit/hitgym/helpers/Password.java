@@ -1,7 +1,8 @@
 package com.esprit.hitgym.helpers;
 
-import com.esprit.hitgym.SecurityUtil;
-import com.esprit.hitgym.db.DatabaseFunctions;
+import com.esprit.hitgym.service.CustomerService;
+import com.esprit.hitgym.service.EmployeeService;
+import com.esprit.hitgym.utils.SecurityUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.security.NoSuchAlgorithmException;
@@ -11,6 +12,14 @@ public class Password {
 
 
     public static String isCustomerOrEmployee;
+
+    private final CustomerService customerService;
+    private final EmployeeService employeeService;
+
+    public Password() {
+        this.customerService = new CustomerService();
+        this.employeeService = new EmployeeService();
+    }
 
     private static void checkCustomerEmployee() {
 
@@ -39,16 +48,16 @@ public class Password {
         return passSalt;
     }
 
-    public static boolean verifyPassword(String email, String enteredPassword) {
+    public boolean verifyPassword(String email, String enteredPassword) {
 
 
         try {
             String storedPasswordHash = "";
 
             if (isCustomerOrEmployee.equals("customer")) {
-                storedPasswordHash = DatabaseFunctions.getUserPassword(email);
+                storedPasswordHash = customerService.findUserPassword(email);
             } else if (isCustomerOrEmployee.equals("employee")) {
-                storedPasswordHash = DatabaseFunctions.getEmployeePassword(email);
+                storedPasswordHash = employeeService.findEmployeePassword(email);
             }
 
             if (SecurityUtil.checkPassword(enteredPassword, storedPasswordHash)) {
@@ -59,7 +68,7 @@ public class Password {
                 return false;
             }
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
         return false;
     }

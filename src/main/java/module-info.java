@@ -11,8 +11,8 @@ module com.esprit.semesterproject_2022 {
     opens com.esprit.hitgym to javafx.fxml;
     exports com.esprit.hitgym;
 
-    exports com.esprit.hitgym.model;
-    opens com.esprit.hitgym.model to javafx.fxml;
+    exports com.esprit.hitgym.Entity;
+    opens com.esprit.hitgym.Entity to javafx.fxml;
     exports com.esprit.hitgym.controller;
     opens com.esprit.hitgym.controller to javafx.fxml;
     exports com.esprit.hitgym.view;
@@ -33,4 +33,6 @@ module com.esprit.semesterproject_2022 {
     opens com.esprit.hitgym.controller.account to javafx.fxml;
     exports com.esprit.hitgym.controller.explore;
     opens com.esprit.hitgym.controller.explore to javafx.fxml;
+    exports com.esprit.hitgym.utils;
+    opens com.esprit.hitgym.utils to javafx.fxml;
 }

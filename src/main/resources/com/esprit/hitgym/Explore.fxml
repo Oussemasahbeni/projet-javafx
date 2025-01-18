@@ -7,7 +7,7 @@
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <AnchorPane prefHeight="583.0" prefWidth="1024.0" stylesheets="@CSS/Main_App.css" xmlns="http://javafx.com/javafx/19"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.hitgym.controller.explore.Explore_Controller">
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.hitgym.controller.explore.ExploreController">
     <children>
         <AnchorPane fx:id="stageBorderPane" layoutX="-1.0" prefHeight="34.0" prefWidth="799.0"
                     stylesheets="@CSS/Main_App.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">

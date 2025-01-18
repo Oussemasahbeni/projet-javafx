@@ -10,7 +10,7 @@
 <?import java.lang.String?>
 <AnchorPane prefHeight="609.0" prefWidth="600.0" styleClass="background" stylesheets="@CSS/Main_App.css"
             xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.esprit.hitgym.controller.queries.CreateQuery_Controller">
+            fx:controller="com.esprit.hitgym.controller.queries.CreateQueryController">
     <children>
         <Text fill="WHITE" layoutX="230.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Query Form"
               textAlignment="CENTER">

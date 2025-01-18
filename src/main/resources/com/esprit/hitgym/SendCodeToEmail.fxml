@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <AnchorPane prefHeight="344.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.esprit.hitgym.controller.auth.ForgetPassword_Controller">
+            fx:controller="com.esprit.hitgym.controller.auth.ForgetPasswordController">
     <children>
         <AnchorPane fx:id="topBar" prefHeight="37.0" prefWidth="300.0" stylesheets="@CSS/pop_up.css"
                     AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-1.0">

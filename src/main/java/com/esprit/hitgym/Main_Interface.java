@@ -1,6 +1,6 @@
 package com.esprit.hitgym;
 
-import com.esprit.hitgym.controller.dashboard.DashboardPanel_Controller;
+import com.esprit.hitgym.controller.dashboard.DashboardPanelController;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -35,7 +35,7 @@ public class Main_Interface implements Initializable {
 
     @FXML
     private Text Username;
-    DashboardPanel_Controller dashboardPanel_controller = new DashboardPanel_Controller();
+    DashboardPanelController dashboardPanel_controller = new DashboardPanelController();
 
     private static int Menu_Counter = 0;
     /*---ChangeFxml Class objects---*/

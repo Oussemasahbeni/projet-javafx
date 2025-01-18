@@ -9,7 +9,7 @@
 <?import java.lang.String?>
 <AnchorPane fx:id="expensePane" prefHeight="400.0" prefWidth="315.0" styleClass="background"
             stylesheets="@CSS/Main_App.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.esprit.hitgym.controller.dashboard.RevenuePanel_Controller">
+            fx:controller="com.esprit.hitgym.controller.dashboard.RevenuePanelController">
     <children>
         <Text fill="#eef6ff" layoutX="55.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text"
               text="Add New Expense">

@@ -8,7 +8,7 @@
 <?import javafx.scene.text.*?>
 <AnchorPane prefHeight="600.0" prefWidth="1024.0" style="-fx-background-color: F2F2F2;"
             xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.esprit.hitgym.controller.dashboard.DashboardPanel_Controller">
+            fx:controller="com.esprit.hitgym.controller.dashboard.DashboardPanelController">
     <children>
         <BorderPane layoutX="85.0" layoutY="-28.0" prefHeight="1728.0" prefWidth="1500.0"
                     style="-fx-background-color: F2F2F2;" AnchorPane.bottomAnchor="-28.0" AnchorPane.leftAnchor="0.0"

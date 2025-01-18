@@ -1,6 +1,6 @@
 package com.esprit.hitgym.helpers;
 
-import com.esprit.hitgym.db.DatabaseFunctions;
+import com.esprit.hitgym.service.CommonService;
 
 import java.util.ArrayList;
 
@@ -8,7 +8,7 @@ public class Username {
 
     public static boolean checkUsername(String username) {
 
-        ArrayList<String> allUsernames = DatabaseFunctions.getAllUsernames();
+        ArrayList<String> allUsernames = CommonService.findAllUsernames();
 
         int i = 0;
 
@@ -17,10 +17,10 @@ public class Username {
             if (s.equals(username)) {
                 System.out.println("Username found!");
 
-                if (i <= DatabaseFunctions.customersListCount) {
+                if (i <= CommonService.customersListCount) {
                     Password.isCustomerOrEmployee = "customer";
                     return true;
-                } else if (i > DatabaseFunctions.employeesListCount) {
+                } else if (i > CommonService.employeesListCount) {
                     Password.isCustomerOrEmployee = "employee";
                 }
 

@@ -1,6 +1,7 @@
 package com.esprit.hitgym.helpers;
 
-import com.esprit.hitgym.db.DatabaseFunctions;
+import com.esprit.hitgym.service.CustomerService;
+import com.esprit.hitgym.service.EmployeeService;
 
 import java.util.ArrayList;
 
@@ -11,6 +12,15 @@ public class Login {
     private String emailUsername;
     private boolean logInSuccessful;
     public static String queryOption;
+
+    private final CustomerService customerService;
+    private final EmployeeService employeeService;
+    private final Password Password = new Password();
+
+    public Login() {
+        this.customerService = new CustomerService();
+        this.employeeService = new EmployeeService();
+    }
 
     public boolean checkUsernameEmail(String type) {
 
@@ -60,9 +70,9 @@ public class Login {
             System.out.println("User logged in successfully");
 
             if (Password.isCustomerOrEmployee.equals("customer")) {
-                DatabaseFunctions.getLoggedInCustomer(emailUsername);
+                customerService.findLoggedInCustomer(emailUsername);
             } else if (Password.isCustomerOrEmployee.equals("employee")) {
-                DatabaseFunctions.getLoggedInEmployee(emailUsername);
+                employeeService.findLoggedInEmployee(emailUsername);
             }
 
             return true;

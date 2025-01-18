@@ -11,7 +11,7 @@
 <?import javafx.scene.text.*?>
 <AnchorPane fx:id="Main" onMouseDragged="#dragWindow" onMousePressed="#pressedWindow" prefHeight="617.0"
             prefWidth="1000.0" stylesheets="@CSS/SignUp.css" xmlns="http://javafx.com/javafx/19"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.hitgym.controller.auth.SignUp_Controller">
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.hitgym.controller.auth.SignUpController">
     <children>
         <HBox id="hbox" fx:id="hbox" layoutX="427.0" layoutY="586.0" prefHeight="37.0" prefWidth="576.0">
             <children>

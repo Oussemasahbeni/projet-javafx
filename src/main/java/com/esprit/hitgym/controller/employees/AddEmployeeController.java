@@ -1,11 +1,12 @@
 package com.esprit.hitgym.controller.employees;
 
+import com.esprit.hitgym.Entity.Employee;
 import com.esprit.hitgym.GeneralFunctions;
-import com.esprit.hitgym.SecurityUtil;
-import com.esprit.hitgym.db.DatabaseFunctions;
 import com.esprit.hitgym.helpers.Email;
 import com.esprit.hitgym.helpers.Username;
-import com.esprit.hitgym.model.Employee;
+import com.esprit.hitgym.service.CommonService;
+import com.esprit.hitgym.service.EmployeeService;
+import com.esprit.hitgym.utils.SecurityUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -127,6 +128,13 @@ public class AddEmployeeController {
     private double x = 0, y = 0;
     GeneralFunctions generalFunctions = new GeneralFunctions();
 
+    private final EmployeeService employeeService;
+
+    public AddEmployeeController() {
+        this.employeeService = new EmployeeService();
+    }
+
+
     String errorStyle = "-fx-border-color: #ff0000; -fx-border-width: 3px; -fx-border-radius:10px";
     String resetStyle = "-fx-border-color: transparent; -fx-border-width: 3px;  -fx-border-radius:10px";
     String alphabetRegex = "^[a-zA-Z ]*$";
@@ -147,7 +155,7 @@ public class AddEmployeeController {
             gender = "female";
         }
 
-        if (fName.isBlank() || fName.isEmpty()) {
+        if (fName.isBlank()) {
             fNameValidation.setText("! FirstName Cannot Be Empty");
             firstnamefield.setStyle(errorStyle);
         } else if (fName.length() < 3) {
@@ -157,7 +165,7 @@ public class AddEmployeeController {
             fNameValidation.setText("! FirstName cannot contain letters");
             firstnamefield.setStyle(errorStyle);
         }
-        if (lName.isBlank() || lName.isEmpty()) {
+        if (lName.isBlank()) {
             lNameValidation.setText("! LastName Cannot Be Empty");
             lastnamefield.setStyle(errorStyle);
         } else if (lName.length() < 3) {
@@ -167,7 +175,7 @@ public class AddEmployeeController {
             lNameValidation.setText("! lastName cannot contain letters");
             lastnamefield.setStyle(errorStyle);
         }
-        if (pNumber.isBlank() || pNumber.isEmpty()) {
+        if (pNumber.isBlank()) {
             pNumberValidation.setText("! PhoneNumber cannot be empty");
             phonenofield.setStyle(errorStyle);
         } else if (!pNumber.matches(numericRegex)) {
@@ -178,7 +186,7 @@ public class AddEmployeeController {
             phonenofield.setStyle(errorStyle);
         }
 
-        if (cnic.isBlank() || cnic.isEmpty()) {
+        if (cnic.isBlank()) {
             cnicValidation.setText("! NIC cannot be cannot be empty");
             nicfield.setStyle(errorStyle);
         } else if (cnic.length() != 8) {
@@ -196,7 +204,7 @@ public class AddEmployeeController {
         } catch (NullPointerException e) {
             dateValidation.setText("!  Joining Date cannot be empty");
         }
-        if (fNameValidation.getText().equals("") && lNameValidation.getText().equals("") && pNumberValidation.getText().equals("") && cnicValidation.getText().equals("") && dateValidation.getText().equals("")) {
+        if (fNameValidation.getText().isEmpty() && lNameValidation.getText().isEmpty() && pNumberValidation.getText().isEmpty() && cnicValidation.getText().isEmpty() && dateValidation.getText().isEmpty()) {
             AccountInfopane.toBack();
             personalInfo.toFront();
             stackpane.getChildren().get(1).setVisible(false);
@@ -211,7 +219,7 @@ public class AddEmployeeController {
         salary = salaryfield.getText();
         Boolean apiResponse = null;
 
-        if (!userEmail.isBlank() && !userEmail.isEmpty() && DatabaseFunctions.makeConnection() == true) {
+        if (!userEmail.isBlank()) {
             //apiResponse = validateEmail(userEmail);
             apiResponse = true;
         }
@@ -255,7 +263,7 @@ public class AddEmployeeController {
             salaryValidation.setText("! Salary Cannot be in Letters");
             salaryfield.setStyle(errorStyle);
         }
-        if (password.isBlank() || password.isEmpty()) {
+        if (password.isBlank()) {
             passwordValidation.setText("! Password cannot be empty");
             passwordfield.setStyle(errorStyle);
         }
@@ -263,16 +271,16 @@ public class AddEmployeeController {
             passwordValidation.setText("! Password must contain at-least 8 letters");
             passwordfield.setStyle(errorStyle);
         }
-        if (uNameValidation.getText().equals("") && emailValidation.getText().equals("") && passwordValidation.getText().equals("") && salaryValidation.getText().equals("") && designationValidation.getText().equals("") && Boolean.TRUE.equals(apiResponse)) {
+        if (uNameValidation.getText().isEmpty() && emailValidation.getText().isEmpty() && passwordValidation.getText().isEmpty() && salaryValidation.getText().isEmpty() && designationValidation.getText().isEmpty() && Boolean.TRUE.equals(apiResponse)) {
             close();
 
             var hashedPassword = SecurityUtil.hashPassword(password);
 
 
-            Employee employee = new Employee(Date.valueOf(joiningDate), fName, lName, userEmail, pNumber, cnic, designation, Integer.parseInt(salary), DatabaseFunctions.generateId("employees"), gender, username, hashedPassword);
+            Employee employee = new Employee(Date.valueOf(joiningDate), fName, lName, userEmail, pNumber, cnic, designation, Integer.parseInt(salary), CommonService.generateId("employees"), gender, username, hashedPassword);
             try {
                 System.out.println("Designation: " + designation);
-                DatabaseFunctions.saveToDb(employee);
+                employeeService.add(employee);
             } catch (Exception e) {
                 System.out.println("No Connection to Database, Data Not Saved");
             }

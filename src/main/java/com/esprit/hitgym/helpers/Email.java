@@ -1,7 +1,7 @@
 package com.esprit.hitgym.helpers;
 
-import com.esprit.hitgym.controller.auth.ForgetPassword_Controller;
-import com.esprit.hitgym.db.DatabaseFunctions;
+import com.esprit.hitgym.controller.auth.ForgetPasswordController;
+import com.esprit.hitgym.service.CommonService;
 import com.mailjet.client.ClientOptions;
 import com.mailjet.client.MailjetClient;
 import com.mailjet.client.errors.MailjetException;
@@ -133,24 +133,24 @@ public class Email {
                 .to(new SendContact(sendToEmail, "Customer"))
                 .from(new SendContact(sendFromEmail, sendFromName))
                 .htmlPart("""
-                        <br>
-                        <h1 style="text-align:center">Password Reset Verification!</h1>
-                        <br>
-                        <h4>Verify if its you</h4>
-                        <br>
-                        <p>Dear Customer,<br>
-                        <br>
-                            We have received a request to reset the password for your HITFIT Gym App account.<br> If you did not initiate this request, please let us know immediately by replying to this email.
-                           <br>
-                           To reset your password, please enter the provided code in the app
-                           <br>
-                           <br>
-                        """ + ForgetPassword_Controller.verificationCode + """
-                           <br>
-                           <br>
-                           Thank you for choosing HITFIT Gym App for your fitness needs. We hope to see you in the gym soon.
-                           </p>
-                        """)
+                                  <br>
+                                  <h1 style="text-align:center">Password Reset Verification!</h1>
+                                  <br>
+                                  <h4>Verify if its you</h4>
+                                  <br>
+                                  <p>Dear Customer,<br>
+                                  <br>
+                                      We have received a request to reset the password for your HITFIT Gym App account.<br> If you did not initiate this request, please let us know immediately by replying to this email.
+                                     <br>
+                                     To reset your password, please enter the provided code in the app
+                                     <br>
+                                     <br>
+                                  """ + ForgetPasswordController.verificationCode + """
+                                     <br>
+                                     <br>
+                                     Thank you for choosing HITFIT Gym App for your fitness needs. We hope to see you in the gym soon.
+                                     </p>
+                                  """)
                 .subject("Password Reset Verification")
                 .trackOpens(TrackOpens.ENABLED)
                 .header("test-header-key", "test-value")
@@ -184,7 +184,7 @@ public class Email {
 
     public static boolean checkEmail(String email) {
 
-        ArrayList<String> allEmails = DatabaseFunctions.getAllEmails();
+        ArrayList<String> allEmails = CommonService.findAllEmails();
 
         int i = 0;
 
@@ -192,11 +192,11 @@ public class Email {
         for (String e : allEmails) {
 
             if (e.equals(email)) {
-                if (i <= DatabaseFunctions.customersListCount) {
+                if (i <= CommonService.customersListCount) {
                     Password.isCustomerOrEmployee = "customer";
                     System.out.println("Customer logging in");
                     return true;
-                } else if (i >= DatabaseFunctions.employeesListCount) {
+                } else if (i >= CommonService.employeesListCount) {
                     Password.isCustomerOrEmployee = "employee";
                     System.out.println("Employee Logging in");
                     System.out.println("Error here");

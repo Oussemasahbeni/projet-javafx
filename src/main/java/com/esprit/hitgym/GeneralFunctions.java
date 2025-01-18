@@ -1,7 +1,7 @@
 package com.esprit.hitgym;
 
 import com.esprit.hitgym.ResizeHelper.FXResizeHelper;
-import com.esprit.hitgym.controller.LoadingScreen_Controller;
+import com.esprit.hitgym.controller.LoadingScreenController;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -17,7 +17,7 @@ import java.io.IOException;
 
 public class GeneralFunctions {
     public Stage stage;
-    LoadingScreen_Controller obj = new LoadingScreen_Controller();
+    LoadingScreenController obj = new LoadingScreenController();
     private static int Nan_counter = 0;
     Rectangle2D dim = Screen.getPrimary().getVisualBounds();
 
