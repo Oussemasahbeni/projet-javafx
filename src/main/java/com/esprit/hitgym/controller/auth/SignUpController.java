@@ -306,18 +306,18 @@ public class SignUpController {
     }
 
     public void starter() {
-        monthlyPlan = 20;
-        package_select.setText("Starter - 20TND");
+        monthlyPlan = 50;
+        package_select.setText("Starter - 50TND");
     }
 
     public void beginner() {
-        monthlyPlan = 30;
-        package_select.setText("Beginner - 30TND");
+        monthlyPlan = 70;
+        package_select.setText("Beginner - 70TND");
     }
 
     public void pro() {
-        monthlyPlan = 50;
-        package_select.setText("Pro - 50TND");
+        monthlyPlan = 100;
+        package_select.setText("Pro - 100TND");
     }
 
     public void clear() {

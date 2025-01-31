@@ -1,6 +1,7 @@
 package com.esprit.hitgym.controller.member;
 
 import com.esprit.hitgym.Entity.Customer;
+import com.esprit.hitgym.GeneralFunctions;
 import com.esprit.hitgym.service.CustomerService;
 import com.esprit.hitgym.view.CustomMenuButton;
 import javafx.collections.FXCollections;
@@ -167,14 +168,7 @@ public class MembersPanelController implements Initializable {
     }
 
     public void view() throws IOException {
-        membercardstage = new Stage();
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("membersDetailCard.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        membercardstage.setScene(scene);
-        membercardstage.initStyle(StageStyle.UNDECORATED);
-        membercardstage.initModality(Modality.APPLICATION_MODAL);
-        membercardstage.showAndWait();
-        membercardstage.centerOnScreen();
+        new GeneralFunctions().switchSceneModality("membersDetailCard.fxml");
     }
 
     public void loadData() throws SQLException {
