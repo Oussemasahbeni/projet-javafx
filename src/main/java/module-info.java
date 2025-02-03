@@ -7,6 +7,7 @@ module com.esprit.semesterproject_2022 {
     requires AnimateFX;
     requires org.jetbrains.annotations;
     requires jbcrypt;
+    requires org.json;
 
     opens com.esprit.hitgym to javafx.fxml;
     exports com.esprit.hitgym;
