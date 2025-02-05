@@ -25,6 +25,13 @@ services:
     networks:
       - mynetwork
 
+  mail-dev:
+    container_name: mail-dev-javafx
+    image: maildev/maildev
+    ports:
+      - "1080:1080"
+      - "1025:1025"
+
 networks:
   mynetwork:
     driver: bridge

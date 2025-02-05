@@ -8,6 +8,7 @@ module com.esprit.semesterproject_2022 {
     requires org.jetbrains.annotations;
     requires jbcrypt;
     requires org.json;
+    requires java.mail;
 
     opens com.esprit.hitgym to javafx.fxml;
     exports com.esprit.hitgym;

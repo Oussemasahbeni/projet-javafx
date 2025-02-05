@@ -10,6 +10,7 @@ import com.esprit.hitgym.helpers.Username;
 import com.esprit.hitgym.service.CommonService;
 import com.esprit.hitgym.service.CustomerService;
 import com.esprit.hitgym.service.TransactionsService;
+import com.esprit.hitgym.utils.EmailSender;
 import com.esprit.hitgym.utils.SecurityUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -299,7 +300,11 @@ public class SignUpController {
 
 //            Email newEmail = new Email();
 //            newEmail.sendWelcomeEmail(customer.getEmail(), customer.getFirstName() + " " + customer.getLastName());
-
+            EmailSender email = new EmailSender();
+            System.out.println(customer.getFirstName() + " " + customer.getLastName());
+            email.setMsg("Welcome to HitGym, " + customer.getFirstName() + " " + customer.getLastName() + "!\n\n" +
+                    "We are excited to have you on board. You have successfully signed up for our services. We hope you enjoy your time with us.\n\n" +
+                    "Best Regards,\nHitGym Team");
 
             new GeneralFunctions().switchScene(e, "SignUp_Prompt.fxml");
         }
