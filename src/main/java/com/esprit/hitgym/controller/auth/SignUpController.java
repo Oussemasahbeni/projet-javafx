@@ -19,6 +19,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+import javax.mail.MessagingException;
 import java.io.IOException;
 import java.time.LocalDate;
 
@@ -118,10 +119,12 @@ public class SignUpController {
 
     private final CustomerService customerService;
     private final TransactionsService transactionsService;
+    private final EmailSender emailSender;
 
     public SignUpController() {
         this.customerService = new CustomerService();
         this.transactionsService = new TransactionsService();
+        this.emailSender = new EmailSender();
     }
 
     public void nextForm(ActionEvent e) throws IOException {
@@ -256,7 +259,7 @@ public class SignUpController {
         }
     }
 
-    public void doneSignUp(ActionEvent e) throws IOException {
+    public void doneSignUp(ActionEvent e) throws IOException, MessagingException {
         nameOfBank = bankName.getText();
         tilID = transactionID.getText();
         userBankAccountName = accountName.getText();
@@ -287,7 +290,7 @@ public class SignUpController {
             packageValidation.setText("! Please Select a Package");
         }
         if (bankNameValidation.getText().isEmpty() && packageValidation.getText().isEmpty() && tilIDValidation.getText().isEmpty() && accountNameValidation.getText().isEmpty()) {
-
+      System.out.println("Salem ena houni");
             var hashedPassword = SecurityUtil.hashPassword(userPassword);
             // for id generation, use "customer" for getting customer id
             // for id generation, use "transaction" for getting transaction id
@@ -295,19 +298,48 @@ public class SignUpController {
             Customer customer = new Customer(firstName, lastName, emailField, gender, phoneNumber, userName, hashedPassword, cin, userAddress, dob.toString(), userWeight, monthlyPlan, CommonService.generateId("customers"));
             customerService.add(customer);
 
+            emailSender.sendEmail(
+                    emailField,
+                    "Welcome to HitGym",
+                    "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">" +
+                            "<html lang=\"en\" dir=\"ltr\" xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:v=\"urn:schemas-microsoft-com:vml\">" +
+                            "<head>" +
+                            "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">" +
+                            "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=yes\">" +
+                            "<meta name=\"x-apple-disable-message-reformatting\">" +
+                            "<meta name=\"format-detection\" content=\"telephone=no, date=no, address=no, email=no, url=no\">" +
+                            "</head>" +
+                            "<body style=\"background-color:#f6f9fc;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Ubuntu,sans-serif;margin:0;padding:0\">" +
+                            "<div style=\"table-layout:fixed;width:100%\">" +
+                            "<div style=\"margin:0 auto;max-width:600px\">" +
+                            "<table align=\"center\" width=\"100%\" role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" style=\"max-width:600px;background-color:#ffffff;margin:0 auto;padding:20px 0 48px;margin-bottom:64px\">" +
+                            "<tbody>" +
+                            "<tr>" +
+                            "<td align=\"center\" style=\"padding:0 48px\">" +
+                            "<hr style=\"border:none;border-top:1px solid #eaeaea;width:100%;border-color:#e6ebf1;margin:20px 0\">" +
+                            "<h2 style=\"font-size:24px;line-height:32px;color:#333333;margin:16px 0;text-align:center\">Welcome to HitGym, " + firstName + "!</h2>" +
+                            "<p style=\"font-size:16px;line-height:24px;margin:16px 0;color:#525f7f;text-align:center\">We are thrilled to have you join our fitness community. Get ready to achieve your fitness goals and embark on an exciting journey.</p>" +
+                            "<p style=\"font-size:16px;line-height:24px;margin:16px 0;color:#525f7f;text-align:center\">Your username: <strong>" + userName + "</strong></p>" +
+                            "<p style=\"font-size:16px;line-height:24px;margin:16px 0;color:#525f7f;text-align:center\">Stay motivated and push your limits. We are here to support you every step of the way!</p>" +
+                            "<hr style=\"border:none;border-top:1px solid #eaeaea;width:100%;border-color:#e6ebf1;margin:20px 0\">" +
+                            "<p style=\"font-size:14px;line-height:20px;margin:16px 0;color:#8898aa;text-align:center\">If you have any questions, feel free to reach out to our support team.</p>" +
+                            "<p style=\"font-size:16px;line-height:24px;margin:16px 0;color:#525f7f;text-align:center\">Best Regards,<br><strong>HitGym Team</strong></p>" +
+                            "</td>" +
+                            "</tr>" +
+                            "</tbody>" +
+                            "</table>" +
+                            "</div>" +
+                            "</div>" +
+                            "</body>" +
+                            "</html>"
+            );
+
             Transaction transaction = new Transaction(CommonService.generateId("transactions"), CustomDate.getCurrentDate(), monthlyPlan, tilID, nameOfBank, userBankAccountName, customer.getCustomerId(), false);
             transactionsService.saveToDb(transaction);
 
-//            Email newEmail = new Email();
-//            newEmail.sendWelcomeEmail(customer.getEmail(), customer.getFirstName() + " " + customer.getLastName());
-            EmailSender email = new EmailSender();
-            System.out.println(customer.getFirstName() + " " + customer.getLastName());
-            email.setMsg("Welcome to HitGym, " + customer.getFirstName() + " " + customer.getLastName() + "!\n\n" +
-                    "We are excited to have you on board. You have successfully signed up for our services. We hope you enjoy your time with us.\n\n" +
-                    "Best Regards,\nHitGym Team");
-
             new GeneralFunctions().switchScene(e, "SignUp_Prompt.fxml");
         }
+
     }
 
     public void starter() {

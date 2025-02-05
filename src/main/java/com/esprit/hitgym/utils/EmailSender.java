@@ -23,7 +23,7 @@ public class EmailSender {
     }
 
     public void sendEmail(String recipient, String subject, String message) throws MessagingException {
-        String from = "javatextmail@gmail.com"; // sender's email address
+        String from = "hit.gym@gmail.com"; // sender's email address
         String host = "localhost";
 
         Properties properties = new Properties();
@@ -45,7 +45,7 @@ public class EmailSender {
         mimeMessage.setFrom(new InternetAddress(from));
         mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient)); // Use recipient, not to
         mimeMessage.setSubject(subject); // Use the passed subject
-        mimeMessage.setText(message); // Use the passed message
+        mimeMessage.setContent(message, "text/html"); // Set content type to "text/html"
         Transport.send(mimeMessage);
 
         System.out.println("Email sent successfully");
