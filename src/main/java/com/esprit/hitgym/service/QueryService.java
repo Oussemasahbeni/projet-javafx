@@ -17,17 +17,34 @@ public class QueryService {
         try {
             queryStatement = getConnection().prepareStatement("""
                     UPDATE queries
-                    SET reply = ? AND status = true
+                    SET reply = ?, status = true
                     WHERE id = ?
                     """);
-            queryStatement.setString(1, reply);
-            queryStatement.setInt(2, id);
-            queryStatement.executeUpdate();
+            queryStatement.setString(1, reply); // Set reply value
+            queryStatement.setInt(2, id);      // Set id value
+            int rowsAffected = queryStatement.executeUpdate(); // Execute update and get affected rows
+
+            if (rowsAffected > 0) {
+                System.out.println("Reply added successfully for Query ID: " + id); // Success log
+                return true;
+            } else {
+                System.out.println("No query found with ID: " + id + ". Reply not added."); // No record updated log
+                return false; // Indicate no update happened
+            }
 
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println("SQL Exception in addReply: " + e.getMessage()); // Detailed SQL error log
+            e.printStackTrace(); // Print stack trace for debugging
+            return false; // Indicate failure
+        } finally {
+            try {
+                if (queryStatement != null) {
+                    queryStatement.close(); // Close statement in finally block
+                }
+            } catch (SQLException e) {
+                System.err.println("Error closing PreparedStatement: " + e.getMessage());
+            }
         }
-        return true;
     }
 
     public boolean addQuery(Queries query) {
