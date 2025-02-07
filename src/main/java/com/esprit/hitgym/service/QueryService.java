@@ -36,23 +36,28 @@ public class QueryService {
 
         try {
             queryStatement = getConnection().prepareStatement("""
-                    INSERT INTO queries (id, heading, email, description, created_date, username)
-                    VALUES (?,?,?,?,?,?)""");
+                    INSERT INTO queries (id, heading, email, description, created_date, username, status, current_status)
+                    VALUES (?,?,?,?,?,?,?,?)"""); // Added status and current_status
+
             queryStatement.setInt(1, query.getId());
             queryStatement.setString(2, query.getHeading());
-            queryStatement.setString(3, query.getUsername());
+            queryStatement.setString(3, query.getEmail());
             queryStatement.setString(4, query.getDescription());
             queryStatement.setDate(5, query.getCurrent_date());
             queryStatement.setString(6, query.getUsername());
+            queryStatement.setBoolean(7, query.getStatus()); // Set status
+            queryStatement.setBoolean(8, true); // Set current_status to true (active)
+
 
             queryStatement.executeUpdate();
 
             return true;
 
         } catch (SQLException e) {
-            System.out.println("Error: " + e);
+            System.out.println("Error in addQuery: " + e); // More descriptive error message
+            e.printStackTrace(); // Print stack trace for debugging
+            return false; // Indicate failure
         }
-        return false;
     }
 
     public ResultSet findQuery(String username) {
@@ -91,5 +96,25 @@ public class QueryService {
         }
         return expensesRs;
 
+    }
+    // *** NEW METHOD: findQueriesByUsername ***
+    public ResultSet findQueriesByUsername(String username) {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            preparedStatement = getConnection().prepareStatement("SELECT * FROM queries WHERE username = ? AND current_status = true");
+            preparedStatement.setString(1, username);
+            resultSet = preparedStatement.executeQuery();
+
+            // No need for the while loop *here*.  The result set is returned directly.
+            return resultSet;  // Return the ResultSet
+
+        } catch (SQLException e) {
+            System.out.println("Error in findQueryByUsername: " + e);
+            e.printStackTrace(); // Print stack trace for debugging
+        }
+
+        return null; // Return null if any error occurs.
     }
 }

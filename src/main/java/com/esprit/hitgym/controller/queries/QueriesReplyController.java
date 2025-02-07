@@ -54,6 +54,13 @@ public class QueriesReplyController implements Initializable {
         new GeneralFunctions().close(exitButton);
     }
 
+    // ADD THIS METHOD:
+    @FXML
+    void closebtn(ActionEvent event) {
+        new GeneralFunctions().close(exitButton);
+    }
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Heading.setText(" ");

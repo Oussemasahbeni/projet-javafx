@@ -153,33 +153,43 @@ public class QueriesPanelController implements Initializable {
         queriesList.clear();
         try {
             resultSet = queryService.findAllQueries();
+            System.out.println("ResultSet from findAllQueries: " + resultSet); // ADDED: Check ResultSet
 
-            while (resultSet.next()) {
-                boolean status = resultSet.getBoolean("status");
-                int id = resultSet.getInt("id");
-                String username = resultSet.getString("username");
-                String email = resultSet.getString("email");
-                String heading = resultSet.getString("heading");
-                String description = resultSet.getString("description");
+            if (resultSet != null) { // ADDED: Check if ResultSet is null
+                while (resultSet.next()) {
+                    boolean status = resultSet.getBoolean("status");
+                    int id = resultSet.getInt("id");
+                    String username = resultSet.getString("username");
+                    String email = resultSet.getString("email");
+                    String heading = resultSet.getString("heading");
+                    String description = resultSet.getString("description");
 
-                QueryMenuButton actionButton = new QueryMenuButton(
-                        "Action",
-                        id,
-                        username,
-                        email,
-                        heading,
-                        description
-                );
+                    QueryMenuButton actionButton = new QueryMenuButton(
+                            "Action",
+                            id,
+                            username,
+                            email,
+                            heading,
+                            description
+                    );
 
-                Queries queryObj = new Queries(status, id, username, email, heading, description, actionButton);
-                queriesList.add(queryObj);
+                    Queries queryObj = new Queries(status, id, username, email, heading, description, actionButton);
+                    queriesList.add(queryObj);
+                    System.out.println("Added query to list: " + queryObj); // ADDED: Check added query
+                }
+            } else {
+                System.out.println("ResultSet is null, no data loaded."); // ADDED: Log if ResultSet is null
             }
 
+
             queriesView.setItems(queriesList);
+            System.out.println("QueriesList size: " + queriesList.size()); // ADDED: Check list size
         } catch (NullPointerException e) {
-            System.out.print(e);
+            System.out.print("NullPointerException in showRecords: " + e);
+            e.printStackTrace(); // Print the stack trace for debugging
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.println("SQLException in showRecords: " + e);
+            e.printStackTrace(); // Print the stack trace for debugging
         }
     }
 }
