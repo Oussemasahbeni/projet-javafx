@@ -27,34 +27,28 @@ public class CustomerPanelController implements Initializable {
     private StackPane stackPane;
     @FXML
     private Button closeBtn;
-
     @FXML
     private Button maxBtn;
     @FXML
     private Button logout;
-
     @FXML
     private AnchorPane navPanel;
-
     @FXML
     private Button restoreBtn;
-    DashboardPanelController dashboardPanel_controller = new DashboardPanelController();
 
     private static int Menu_Counter = 0;
-    /*---ChangeFxml Class objects---*/
-    Changefxml dashboardPanel = new Changefxml();
-    Changefxml BMIViewPanel = new Changefxml();
-    Changefxml accountSettingsPanel = new Changefxml();
-    Changefxml QueriesFormPanel = new Changefxml();
-    Changefxml equipmentsPanel = new Changefxml();
-    Changefxml FAQPanel = new Changefxml();
 
+    // Panel management
+    private final ArrayList<Changefxml> panels = new ArrayList<>();
 
-    ArrayList<Changefxml> panels = new ArrayList<>();
-
-    /*--ChangeFXML class objects bock ends here--*/
-
-    /*--Windows Border Logic--*/
+    /*--- ChangeFxml Class objects ---*/
+    private final Changefxml dashboardPanel = new Changefxml();
+    private final Changefxml BMIViewPanel = new Changefxml();
+    private final Changefxml accountSettingsPanel = new Changefxml();
+    private final Changefxml QueriesFormPanel = new Changefxml();
+    private final Changefxml equipmentsPanel = new Changefxml();
+    private final Changefxml FAQPanel = new Changefxml();
+    private final Changefxml aiAssistantPanel = new Changefxml();
 
     @FXML
     void close() {
@@ -71,110 +65,75 @@ public class CustomerPanelController implements Initializable {
         new GeneralFunctions().restoring(restoreBtn);
     }
 
-    /*--End--*/
     @FXML
     void menuBar() {
-
-
         if (Menu_Counter == 0) {
-
-            // for nav pane
-            TranslateTransition translateTransition = new TranslateTransition();
-            translateTransition.setDuration(Duration.millis(400));
-            translateTransition.setNode(navPanel);
-            translateTransition.setToX(0);
-            translateTransition.play();
-
-//            // for stack pane
-            TranslateTransition translateTransition1 = new TranslateTransition();
-            translateTransition1.setDuration(Duration.millis(400));
-            translateTransition1.setNode(stackPane);
-            translateTransition1.setToX(-80);
-            translateTransition1.play();
-
-            stackPane.setTranslateX(-80);
-            navPanel.setTranslateX(-186);
+            animatePanel(navPanel, 0);
+            animatePanel(stackPane, -80);
             Menu_Counter = 1;
-        } else if (Menu_Counter == 1) {
-            TranslateTransition translateTransition = new TranslateTransition();
-            translateTransition.setDuration(Duration.millis(400));
-            translateTransition.setNode(navPanel);
-            translateTransition.setToX(-186);
-            translateTransition.play();
-
-            // for stack pane
-            TranslateTransition translateTransition1 = new TranslateTransition();
-            translateTransition1.setDuration(Duration.millis(400));
-            translateTransition1.setNode(stackPane);
-            translateTransition1.setToX(-186);
-            translateTransition1.play();
-//
-//            TranslateTransition translateTransition2 = new TranslateTransition();
-//            translateTransition2.setDuration(Duration.millis(400));
-//            translateTransition2.setNode(dashboardPanel_controller.scrollpanedashboard);
-//            translateTransition2.setToX(-100);
-//
-//            stackPane.setTranslateX(0);
-//            navPanel.setTranslateX(0);
-//            dashboardPanel_controller.scrollpanedashboard.setTranslateX(0);
-
+        } else {
+            animatePanel(navPanel, -186);
+            animatePanel(stackPane, -186);
             Menu_Counter = 0;
         }
+    }
 
+    private void animatePanel(AnchorPane pane, int position) {
+        TranslateTransition transition = new TranslateTransition(Duration.millis(400), pane);
+        transition.setToX(position);
+        transition.play();
+    }
 
+    private void animatePanel(StackPane pane, int position) {
+        TranslateTransition transition = new TranslateTransition(Duration.millis(400), pane);
+        transition.setToX(position);
+        transition.play();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-        // created  a class named change fxml and called its function which loads up a new fxml file and makes it the children of stack pane
+        // Load FXML files
         dashboardPanel.getfxml("CustomerDashboardPanel.fxml");
         BMIViewPanel.getfxml("BMIViewPanel.fxml");
         QueriesFormPanel.getfxml("CustomerQueriesFormPanel.fxml");
         equipmentsPanel.getfxml("EquipmentsPanel.fxml");
         accountSettingsPanel.getfxml("AccountSettingsPanel.fxml");
         FAQPanel.getfxml("FAQPanel.fxml");
+        aiAssistantPanel.getfxml("AiAssistant.fxml");
 
+        // Add panels to the list
+        panels.add(accountSettingsPanel);
+        panels.add(BMIViewPanel);
+        panels.add(QueriesFormPanel);
+        panels.add(equipmentsPanel);
+        panels.add(FAQPanel);
+        panels.add(dashboardPanel);
+        panels.add(aiAssistantPanel);
 
-        /*--Adding to Arraylist of panels--*/
-        panels.add(0, accountSettingsPanel);
-        panels.add(1, BMIViewPanel);
-        panels.add(2, QueriesFormPanel);
-        panels.add(3, equipmentsPanel);
-        panels.add(4, FAQPanel);
-        panels.add(5, dashboardPanel);
-        /*--Adding Ends here--*/
-
-        /*--Adding FXML stored in panes to Children of stack pane--*/
-        for (int i = 0; i < 6; i++) {
-            stackPane.getChildren().add(i, panels.get(i).pane);
+        // Add panels to StackPane
+        for (Changefxml panel : panels) {
+            stackPane.getChildren().add(panel.pane);
         }
-        /*--Adding of Children end here--*/
 
-        /*--Initially only the Dashboard will be displayed so, turning the visibility of other panes off--*/
-        for (int i = 0; i < 5; i++) {
-            stackPane.getChildren().get(i).setVisible(false);
-        }
-        /*-Visibility Block End here-*/
-        /*-- added a library called "aniamtefx" ver 1.2.0 from Maven library ( -Saad S. )--*/
+        // Initially show only the dashboard
+        setActivePanel(5);
+
+        // Animate stack pane on startup
         new animatefx.animation.FadeIn(stackPane).play();
 
-
-
-
-        /*---nav pane animation code starts here--*/
+        // Initial menu state
         if (Menu_Counter == 0) {
             navPanel.setTranslateX(-186);
             stackPane.setTranslateX(-186);
         }
-        if (Menu_Counter == 1) {
-
-            navPanel.setTranslateX(0);
-            // stackPane.setTranslateX(0);
-        }
-
     }
-    /*---All the menu button actions are handled here---*/
+
+    private void setActivePanel(int activeIndex) {
+        for (int i = 0; i < panels.size(); i++) {
+            stackPane.getChildren().get(i).setVisible(i == activeIndex);
+        }
+        new animatefx.animation.FadeIn(stackPane).play();
+    }
 
     @FXML
     void logoutBtn(ActionEvent e) throws IOException {
@@ -188,70 +147,36 @@ public class CustomerPanelController implements Initializable {
 
     @FXML
     void AccountSettingsBtn() {
-        stackPane.getChildren().get(0).setVisible(true);
-        for (int i = 1; i < 6; i++) {
-            stackPane.getChildren().get(i).setVisible(false);
-        }
-        new animatefx.animation.FadeIn(stackPane).play();
+        setActivePanel(0);
     }
 
     @FXML
     void DashboardBtn() {
-
-        stackPane.getChildren().get(5).setVisible(true);
-        for (int i = 0; i < 5; i++) {
-            stackPane.getChildren().get(i).setVisible(false);
-        }
-        new animatefx.animation.FadeIn(stackPane).play();
+        setActivePanel(5);
     }
 
     @FXML
     void BMIBtn() {
-
-        stackPane.getChildren().get(1).setVisible(true);
-        for (int i = 0; i < 6; i++) {
-            if (i != 1) {
-                stackPane.getChildren().get(i).setVisible(false);
-            }
-        }
-        new animatefx.animation.FadeIn(stackPane).play();
+        setActivePanel(1);
     }
 
     @FXML
     void EquipmentsBtn() {
-        stackPane.getChildren().get(3).setVisible(true);
-
-        for (int i = 0; i < 6; i++) {
-            if (i != 3) {
-                stackPane.getChildren().get(i).setVisible(false);
-            }
-        }
-        new animatefx.animation.FadeIn(stackPane).play();
+        setActivePanel(3);
     }
 
     @FXML
     void FaqBtn() {
-        stackPane.getChildren().get(4).setVisible(true);
-
-        for (int i = 0; i < 6; i++) {
-            if (i != 4) {
-                stackPane.getChildren().get(i).setVisible(false);
-            }
-        }
-        new animatefx.animation.FadeIn(stackPane).play();
+        setActivePanel(4);
     }
 
     @FXML
     void QueriesBtn() {
-        stackPane.getChildren().get(2).setVisible(true);
-        for (int i = 0; i < 6; i++) {
-            if (i != 2) {
-                stackPane.getChildren().get(i).setVisible(false);
-            }
-        }
-        new animatefx.animation.FadeIn(stackPane).play();
+        setActivePanel(2);
     }
 
-
-    /*--------------------------------------------------*/
+    @FXML
+    public void aiAssistant() {
+        setActivePanel(6);
+    }
 }

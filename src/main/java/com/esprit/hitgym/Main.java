@@ -10,7 +10,7 @@ import javafx.stage.StageStyle;
 import javax.mail.MessagingException;
 import java.io.IOException;
 
-public class Main extends Application {
+public class  Main extends Application {
 
     @Override
     public void start(Stage stage) throws IOException, MessagingException {

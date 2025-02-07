@@ -9,8 +9,10 @@
 <AnchorPane prefHeight="583.0" prefWidth="1044.0" xmlns="http://javafx.com/javafx/19"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.hitgym.controller.BMIViewPanelController">
     <children>
-        <BorderPane layoutX="85.0" layoutY="-28.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0"
-                    AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <BorderPane layoutX="271.0" layoutY="183.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0"
+                    AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0"/>
+        <BorderPane layoutX="10.0" layoutY="60.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0"
+                    AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
             <top>
                 <BorderPane prefHeight="52.0" prefWidth="600.0" styleClass="borderName" stylesheets="@CSS/Main_App.css"
                             BorderPane.alignment="CENTER">
@@ -225,5 +227,6 @@
                 </BorderPane>
             </center>
         </BorderPane>
+
     </children>
 </AnchorPane>

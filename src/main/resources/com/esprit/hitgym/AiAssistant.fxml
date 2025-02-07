@@ -2,13 +2,48 @@
 
 <?import java.lang.*?>
 <?import java.util.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.collections.FXCollections?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
+            fx:controller="com.esprit.hitgym.controller.customer.AiAssistant"
+            prefHeight="583.0" prefWidth="1044.0"
+            style="-fx-background-color: #2c3e50; -fx-padding: 20;">
 
+
+    <HBox alignment="CENTER" prefWidth="1044.0">
+
+        <!-- Chat Box UI elements -->
+        <VBox spacing="10.0" alignment="CENTER" prefHeight="580.0" prefWidth="800.0"
+              style="-fx-background-color: #ecf0f1; -fx-background-radius: 10; -fx-padding: 20; -fx-padding-left: 200;"
+              AnchorPane.topAnchor="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+
+            <Text text="Chat with AI Gym Assistant" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-fill: #34495e;"/>
+
+            <ListView fx:id="chatListView" prefHeight="400.0" prefWidth="720.0"
+                      style="-fx-background-color: #ffffff; -fx-background-radius: 10; -fx-padding: 10; -fx-font-size: 14px;">
+                <items>
+                    <FXCollections fx:factory="observableArrayList"/>
+                </items>
+            </ListView>
+
+            <HBox spacing="10.0" alignment="CENTER">
+                <TextField fx:id="messageInput" prefHeight="40.0" prefWidth="600.0" promptText="Type your message..."
+                           style="-fx-background-color: #ffffff; -fx-background-radius: 10; -fx-padding: 10; -fx-font-size: 14px;"/>
+                <Button text="Send" onAction="#sendMessage" prefHeight="40.0" prefWidth="100.0"
+                        style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-background-radius: 10; -fx-font-size: 14px;"/>
+            </HBox>
+
+            <!-- Progress Indicator -->
+            <ProgressIndicator fx:id="progressIndicator" visible="false"/>
+        </VBox>
+    </HBox>
+
+
+    <!-- End Chat Box UI elements -->
 </AnchorPane>

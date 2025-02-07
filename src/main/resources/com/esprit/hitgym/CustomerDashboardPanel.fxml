@@ -27,28 +27,8 @@
                         </Text>
                     </center>
                 </BorderPane>
-
-                <!-- Chat Box UI elements - ADD THIS BLOCK -->
-                <VBox layoutX="750.0" layoutY="350.0" prefHeight="200.0" prefWidth="250.0" spacing="5.0"
-                      AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0">
-                    <children>
-                        <Text text="Chat with AI Gym Assistant" styleClass="text-bold" fill="WHITE">
-                            <font>
-                                <Font size="14.0"/>
-                            </font>
-                        </Text>
-                        <TextArea fx:id="chatDisplayArea" editable="false" prefHeight="150.0" promptText="Chat history..."
-                                  VBox.vgrow="ALWAYS"/>
-                        <HBox spacing="5.0">
-                            <children>
-                                <TextField fx:id="messageInput" prefHeight="25.0" promptText="Type your message..."/>
-                                <Button text="Send" onAction="#sendMessage" styleClass="buttoncolor" textFill="WHITE"/>
-                            </children>
-                        </HBox>
-                    </children>
-                </VBox>
-                <!-- End Chat Box UI elements -->
             </top>
+
             <center>
                 <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                     <children>
