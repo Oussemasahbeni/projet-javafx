@@ -12,12 +12,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Pagination;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.Button;
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
@@ -51,7 +48,7 @@ public class CustomerQueriesFormPanelController implements Initializable {
     private TableColumn<Queries, String> Description;
 
     @FXML
-    private TableColumn<Queries, String> action; // Should be QueryMenuButton but FXML might not handle it directly
+    private TableColumn<Queries, QueryMenuButton> action; // Changed type to QueryMenuButton
 
     @FXML
     private Button addbutton;
@@ -174,6 +171,7 @@ public class CustomerQueriesFormPanelController implements Initializable {
                 String email = resultSet.getString("email");
                 String heading = resultSet.getString("heading");
                 String description = resultSet.getString("description");
+                String reply = resultSet.getString("reply"); // Fetch reply
 
                 QueryMenuButton actionButton = new QueryMenuButton(
                         "Action",
@@ -184,7 +182,12 @@ public class CustomerQueriesFormPanelController implements Initializable {
                         description
                 );
 
+                // **ADD THIS BLOCK - SET ViewActionHandler for Customer View**
+                actionButton.setViewActionHandler(button -> showReplyDialog(button, reply)); // Pass reply here
+
+
                 Queries queryObj = new Queries(status, id, fetchedUsername, email, heading, description, actionButton);
+                queryObj.setReply(reply); // Set reply in Queries object
                 queriesList.add(queryObj);
             }
 
@@ -196,5 +199,20 @@ public class CustomerQueriesFormPanelController implements Initializable {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    // New method to show the reply in a dialog (Same as in QueriesPanelController)
+    private void showReplyDialog(QueryMenuButton button, String replyText) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Query Reply");
+        alert.setHeaderText("Reply from Staff");
+
+        if (replyText != null && !replyText.isEmpty()) {
+            alert.setContentText(replyText);
+        } else {
+            alert.setContentText("No reply yet for this query.");
+        }
+
+        alert.showAndWait();
     }
 }
