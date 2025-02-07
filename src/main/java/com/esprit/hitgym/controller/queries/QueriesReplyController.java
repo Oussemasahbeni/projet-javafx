@@ -55,6 +55,7 @@ public class QueriesReplyController implements Initializable {
     }
 
     // ADD THIS METHOD:
+    // ADD THIS METHOD:omar l mseddi
     @FXML
     void closebtn(ActionEvent event) {
         new GeneralFunctions().close(exitButton);
