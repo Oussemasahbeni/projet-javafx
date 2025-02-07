@@ -10,6 +10,7 @@ import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -41,8 +42,7 @@ public class QueriesPanelController implements Initializable {
     private TableColumn<Queries, Integer> Id;
 
     @FXML
-    private TableColumn<Queries, String> action;
-
+    private TableColumn<Queries, QueryMenuButton> action; // Changed type to QueryMenuButton
     @FXML
     private TableColumn<Queries, String> description;
 
@@ -77,9 +77,6 @@ public class QueriesPanelController implements Initializable {
         queriesView.setItems(queriesList);
     }
 
-    public static void view() throws IOException {
-        new GeneralFunctions().switchSceneModality("ViewQuery.fxml");
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -153,9 +150,9 @@ public class QueriesPanelController implements Initializable {
         queriesList.clear();
         try {
             resultSet = queryService.findAllQueries();
-            System.out.println("ResultSet from findAllQueries: " + resultSet); // ADDED: Check ResultSet
+            System.out.println("ResultSet from findAllQueries: " + resultSet);
 
-            if (resultSet != null) { // ADDED: Check if ResultSet is null
+            if (resultSet != null) {
                 while (resultSet.next()) {
                     boolean status = resultSet.getBoolean("status");
                     int id = resultSet.getInt("id");
@@ -163,6 +160,7 @@ public class QueriesPanelController implements Initializable {
                     String email = resultSet.getString("email");
                     String heading = resultSet.getString("heading");
                     String description = resultSet.getString("description");
+                    String reply = resultSet.getString("reply"); // Fetch the reply
 
                     QueryMenuButton actionButton = new QueryMenuButton(
                             "Action",
@@ -173,23 +171,43 @@ public class QueriesPanelController implements Initializable {
                             description
                     );
 
+                    // Set the ViewActionHandler for the button
+                    actionButton.setViewActionHandler(button -> showReplyDialog(button, reply)); // Pass reply here
+
+
                     Queries queryObj = new Queries(status, id, username, email, heading, description, actionButton);
+                    queryObj.setReply(reply); // Set reply in Queries object
                     queriesList.add(queryObj);
-                    System.out.println("Added query to list: " + queryObj); // ADDED: Check added query
+                    System.out.println("Added query to list: " + queryObj);
                 }
             } else {
-                System.out.println("ResultSet is null, no data loaded."); // ADDED: Log if ResultSet is null
+                System.out.println("ResultSet is null, no data loaded.");
             }
 
 
             queriesView.setItems(queriesList);
-            System.out.println("QueriesList size: " + queriesList.size()); // ADDED: Check list size
+            System.out.println("QueriesList size: " + queriesList.size());
         } catch (NullPointerException e) {
             System.out.print("NullPointerException in showRecords: " + e);
-            e.printStackTrace(); // Print the stack trace for debugging
+            e.printStackTrace();
         } catch (SQLException e) {
             System.out.println("SQLException in showRecords: " + e);
-            e.printStackTrace(); // Print the stack trace for debugging
+            e.printStackTrace();
         }
+    }
+
+    // New method to show the reply in a dialog
+    private void showReplyDialog(QueryMenuButton button, String replyText) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Query Reply");
+        alert.setHeaderText("Reply from Staff");
+
+        if (replyText != null && !replyText.isEmpty()) {
+            alert.setContentText(replyText);
+        } else {
+            alert.setContentText("No reply yet for this query.");
+        }
+
+        alert.showAndWait();
     }
 }

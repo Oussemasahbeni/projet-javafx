@@ -1,11 +1,30 @@
 package com.esprit.hitgym.controller.queries;
 
+import javafx.event.ActionEvent;
 import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 
 public class QueryMenuButton extends MenuButton {
     private int ButtonId;
     private String username, email, heading, description;
     private Boolean status;
+
+    // Add a functional interface to handle the View action
+    private ViewActionHandler viewActionHandler;
+
+    public interface ViewActionHandler {
+        void onView(QueryMenuButton button);
+    }
+
+    public void setViewActionHandler(ViewActionHandler handler) {
+        this.viewActionHandler = handler;
+    }
+
+    // ADDED: Getter for viewActionHandler
+    public ViewActionHandler getViewActionHandler() {
+        return viewActionHandler;
+    }
+
 
     public Boolean getStatus() {
         return status;
@@ -62,6 +81,15 @@ public class QueryMenuButton extends MenuButton {
         this.email = email;
         this.heading = heading;
         this.description = description;
-    }
 
+        MenuItem item1 = new MenuItem("View");
+
+        item1.setOnAction(event -> {
+            if (viewActionHandler != null) {
+                viewActionHandler.onView(this); // Call the handler when "View" is clicked
+            }
+        });
+
+        getItems().addAll(item1);
+    }
 }

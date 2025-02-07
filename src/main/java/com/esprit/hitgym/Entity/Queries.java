@@ -1,11 +1,9 @@
 package com.esprit.hitgym.Entity;
 
 import com.esprit.hitgym.GeneralFunctions;
-import com.esprit.hitgym.controller.queries.QueriesPanelController;
 import com.esprit.hitgym.controller.queries.QueriesReplyController;
 import com.esprit.hitgym.controller.queries.QueryMenuButton;
 import com.esprit.hitgym.helpers.CustomDate;
-import com.esprit.hitgym.view.QueryView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.paint.Paint;
 
@@ -23,7 +21,12 @@ public class Queries {
     private Date current_date;
 
     private QueryMenuButton actionBtn;
-    private MenuItem item1 = new MenuItem("View");
+    // REMOVED: private MenuItem item1 = new MenuItem("View"); // REMOVE DUPLICATE VIEW ITEM
+    private MenuItem item3 = new MenuItem("Reply");
+
+    // ADDED: Reply field
+    private String reply;
+
 
     public String getStatusString() {
         return StatusString;
@@ -97,6 +100,16 @@ public class Queries {
         this.current_date = current_date;
     }
 
+    // ADDED: Getter and Setter for reply
+    public String getReply() {
+        return reply;
+    }
+
+    public void setReply(String reply) {
+        this.reply = reply;
+    }
+
+
     public Queries(Boolean status, int id, String username, String email, String heading, String description, QueryMenuButton actionBtn) {
         this.id = id;
         this.username = username;
@@ -104,7 +117,7 @@ public class Queries {
         this.heading = heading;
         this.description = description;
         this.status = status;
-        if (status == true) {
+        if (status) {
             StatusString = "Completed";
         } else {
             StatusString = "Pending";
@@ -113,20 +126,18 @@ public class Queries {
         this.actionBtn.setStyle("-fx-background-color: #00C2FF; -fx-background-radius: 12px;");
         this.actionBtn.setTextFill(Paint.valueOf("White"));
 
-        actionBtn.getItems().addAll(item1, item3);
-        item1.setOnAction(event ->
-        {
-            QueryView.username = actionBtn.getUsername();
-            QueryView.email = actionBtn.getEmail();
-            QueryView.heading = actionBtn.getHeading();
-            QueryView.description = actionBtn.getDescription();
-            try {
-                QueriesPanelController.view();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        // REMOVED: actionBtn.getItems().addAll(item1, item3); // REMOVE DUPLICATE VIEW ITEM
+        actionBtn.getItems().addAll(item3); // KEEP ONLY REPLY OPTION
 
-        });
+        // REMOVED: item1 Action Handler - View action now handled only by QueryMenuButton
+        /*item1.setOnAction(event ->
+        {
+            // VIEW ACTION IS NOW HANDLED VIA DIALOG IN QueriesPanelController - DO NOTHING HERE.
+             if (actionBtn.getViewActionHandler() != null) { // Ensure handler is set
+                actionBtn.getViewActionHandler().onView(actionBtn); // Call the handler
+            }
+        });*/
+
 
         item3.setOnAction(event ->
         {
@@ -148,10 +159,8 @@ public class Queries {
         this.heading = heading;
         this.status = status;
         this.current_date = CustomDate.getCurrentDate();
-
     }
 
-    private MenuItem item3 = new MenuItem("Reply");
 
     public String getLowerUserName() {
         return getUsername().toLowerCase();
