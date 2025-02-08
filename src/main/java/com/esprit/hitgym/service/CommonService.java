@@ -57,6 +57,32 @@ public class CommonService {
 
     }
 
+
+    public static boolean cinExists(String cin) {
+
+        ResultSet cinRs = null;
+        PreparedStatement queryStatement = null;
+        boolean cinExists = false;
+
+        try {
+            queryStatement = getConnection().prepareStatement("""
+                    SELECT cin FROM customers
+                    WHERE cin = ?;""");
+
+            queryStatement.setString(1, cin);
+            cinRs = queryStatement.executeQuery();
+
+            if (cinRs.next()) {
+                cinExists = true;
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error in retrieving cin: " + e);
+        }
+
+        return cinExists;
+    }
+
     public static ArrayList<String> findAllEmails() {
 
         ResultSet allEmailsRs = null;
