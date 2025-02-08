@@ -233,6 +233,9 @@ public class SignUpController {
         } else if (!cin.matches(numericRegex)) {
             nicValidation.setText("! cin cannot contain letters");
             cnic.setStyle(errorStyle);
+        } else if(CommonService.cinExists(cin)) {
+            nicValidation.setText("! CIN Already Exists");
+            cnic.setStyle(errorStyle);
         }
         if (userWeight.equals("0")) {
             weightValidation.setText("! Invalid weight");
