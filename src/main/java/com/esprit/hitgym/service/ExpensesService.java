@@ -119,4 +119,21 @@ public class ExpensesService {
         }
         return monthlyExpenses;
     }
+
+    public ResultSet getAllExpenses() {
+
+        PreparedStatement queryStatement = null;
+        ResultSet expensesRs = null;
+
+        try {
+            queryStatement = getConnection().prepareStatement("""
+                    SELECT * FROM expenses;
+                    """);
+            expensesRs = queryStatement.executeQuery();
+        } catch (SQLException e) {
+            System.out.println("Error : " + e);
+        }
+        return expensesRs;
+
+    }
 }

@@ -27,7 +27,6 @@ public class Expense {
         this.year = customDate.getYear();
     }
 
-
     public String getDescription() {
         return description;
     }
@@ -83,6 +82,4 @@ public class Expense {
     public void setYear(String year) {
         this.year = year;
     }
-
-
 }

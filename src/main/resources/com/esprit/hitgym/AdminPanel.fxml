@@ -298,6 +298,27 @@
                                 <Insets top="10.0"/>
                             </VBox.margin>
                         </Button>
+                        <Button fx:id="expensesTable" graphicTextGap="0.0" mnemonicParsing="false"
+                                onAction="#ExpensesTableBtn" prefHeight="25.0" prefWidth="186.0" text="Expenses Table">
+                            <graphic>
+                                <ImageView fitHeight="21.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true"
+                                           translateX="-15.0">
+                                    <image>
+                                        <Image url="@BorderIcons/Revenue.png"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                            <font>
+                                <Font size="10.0"/>
+                            </font>
+                            <styleClass>
+                                <String fx:value="navButtons"/>
+                                <String fx:value="text"/>
+                            </styleClass>
+                            <VBox.margin>
+                                <Insets top="10.0"/>
+                            </VBox.margin>
+                        </Button>
                     </children>
                 </VBox>
                 <Rectangle arcHeight="5.0" arcWidth="1.0" fill="#ecf1f5" height="1.0" layoutX="30.0" layoutY="169.0"

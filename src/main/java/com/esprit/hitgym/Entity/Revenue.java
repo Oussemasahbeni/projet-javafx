@@ -28,14 +28,6 @@ public class Revenue {
     public Revenue() {
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
     public int getId() {
         return id;
     }
@@ -66,5 +58,13 @@ public class Revenue {
 
     public void setAmount(int amount) {
         this.amount = amount;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }
