@@ -5,6 +5,8 @@ import com.esprit.hitgym.Entity.Queries;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.esprit.hitgym.utils.Datasource.getConnection;
 
@@ -97,6 +99,33 @@ public class QueryService {
 
         return resultSet;
     }
+
+    public List<Queries> getAllQueries() {
+        List<Queries> queriesList = new ArrayList<>();
+
+        try {
+            ResultSet resultSet = findAllQueries(); // Exécuter la requête SQL
+
+            while (resultSet.next()) {
+                // Extraire les données du ResultSet
+                int id = resultSet.getInt("id");
+                String username = resultSet.getString("username");
+                String email = resultSet.getString("email");
+                String heading = resultSet.getString("heading");
+                String description = resultSet.getString("description");
+                boolean status = resultSet.getBoolean("status");
+
+                // Créer un objet Queries et l'ajouter à la liste
+                queriesList.add(new Queries(id, username, email, heading, description, status));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return queriesList;
+    }
+
+
 
     public ResultSet findAllQueries() {
 

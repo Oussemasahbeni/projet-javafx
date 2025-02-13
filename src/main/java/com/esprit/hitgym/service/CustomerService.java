@@ -6,12 +6,16 @@ import com.esprit.hitgym.Entity.Package2;
 import com.esprit.hitgym.Entity.Package3;
 import com.esprit.hitgym.controller.customer.CustomerPanelController;
 import com.esprit.hitgym.helpers.Login;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import org.jetbrains.annotations.NotNull;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import static com.esprit.hitgym.utils.Datasource.getConnection;
 
@@ -69,6 +73,42 @@ public class CustomerService {
 
         return allDataRs;
     }
+
+    public ObservableList<Customer> findAllCustomersObs() {
+        ObservableList<Customer> allDataRs = FXCollections.observableArrayList();
+
+        String query = "SELECT id, first_name, last_name, email, phone_number, username, gender, weight, dob, monthly_plan, cin, is_active, address FROM customers WHERE current_status = true";
+
+        try (PreparedStatement queryStatement = getConnection().prepareStatement(query);
+             ResultSet resultSet = queryStatement.executeQuery()) {
+
+            while (resultSet.next()) {
+                Customer customer = new Customer(
+                        resultSet.getString("first_name"),
+                        resultSet.getString("last_name"),
+                        resultSet.getString("email"),
+                        resultSet.getString("gender"),
+                        resultSet.getString("phone_number"),
+                        resultSet.getString("username"),
+                        "", // Mot de passe non récupéré
+                        resultSet.getString("cin"),
+                        resultSet.getString("address"),
+                        resultSet.getString("dob"),
+                        resultSet.getString("weight"),
+                        resultSet.getInt("monthly_plan"),
+                        resultSet.getInt("id")
+                );
+                customer.setActive(resultSet.getBoolean("is_active"));
+                allDataRs.add(customer);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error in getting customers: " + e.getMessage());
+        }
+
+        return allDataRs;
+    }
+
+
 
     public void updateCustomerPassword(String email, String password) {
         PreparedStatement queryStatement = null;
