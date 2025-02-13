@@ -6,6 +6,7 @@ import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Modality;
@@ -51,6 +52,20 @@ public class GeneralFunctions {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setScene(scene);
+        stage.showAndWait();
+    }
+
+    public void switchSceneModalityCallback(String fxmlFile, Runnable callback) throws IOException {
+        // Load the FXML file and create a new stage
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
+        Parent root = loader.load();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.APPLICATION_MODAL);
+
+        // Set the callback to be executed when the stage is closed
+        stage.setOnHiding(event -> callback.run());
+
         stage.showAndWait();
     }
 

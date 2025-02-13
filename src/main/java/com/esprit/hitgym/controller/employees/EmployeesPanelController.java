@@ -4,6 +4,7 @@ import com.esprit.hitgym.Entity.Employee;
 import com.esprit.hitgym.GeneralFunctions;
 import com.esprit.hitgym.service.EmployeeService;
 import com.esprit.hitgym.view.CustomMenuButton;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -92,7 +93,11 @@ public class EmployeesPanelController implements Initializable {
 
     @FXML
     void addEmployee() throws IOException {
-        new GeneralFunctions().switchSceneModality("AddEmployee.fxml");
+
+        new GeneralFunctions().switchSceneModalityCallback("AddEmployee.fxml", () -> {
+            keyword.setText("");
+            loadData();
+        });
     }
 
     @FXML
@@ -195,18 +200,20 @@ public class EmployeesPanelController implements Initializable {
     }
 
     private void loadData() {
-        showrecords();
+        Platform.runLater(() -> {
+            showrecords();
 
-        Id.setCellValueFactory(new PropertyValueFactory<>("id"));
-        FirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-        LastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-        email.setCellValueFactory(new PropertyValueFactory<>("email"));
-        phone.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
-        cin.setCellValueFactory(new PropertyValueFactory<>("cinNumber"));
-        Salary.setCellValueFactory(new PropertyValueFactory<>("salary"));
-        action.setCellValueFactory(new PropertyValueFactory<>("actionbtn"));
-        Designation.setCellValueFactory(new PropertyValueFactory<>("designation"));
-        SelectedDate.setCellValueFactory(new PropertyValueFactory<>("joiningDate"));
+            Id.setCellValueFactory(new PropertyValueFactory<>("id"));
+            FirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+            LastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+            email.setCellValueFactory(new PropertyValueFactory<>("email"));
+            phone.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
+            cin.setCellValueFactory(new PropertyValueFactory<>("cinNumber"));
+            Salary.setCellValueFactory(new PropertyValueFactory<>("salary"));
+            action.setCellValueFactory(new PropertyValueFactory<>("actionbtn"));
+            Designation.setCellValueFactory(new PropertyValueFactory<>("designation"));
+            SelectedDate.setCellValueFactory(new PropertyValueFactory<>("joiningDate"));
+        });
     }
 
     private void showrecords() {
