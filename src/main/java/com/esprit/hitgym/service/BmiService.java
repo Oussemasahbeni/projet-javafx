@@ -28,7 +28,7 @@ public class BmiService {
             queryStatement.setInt(4, fk_customer_id);
             queryStatement.setString(5, bmi.getRecordedMonth());
             queryStatement.setDouble(6, bmi.getHeight());
-            queryStatement.setDouble(7, bmi.getBMI());
+            queryStatement.setDouble(7, bmi.getBmiValue());
 
             queryStatement.executeUpdate();
             return true;
