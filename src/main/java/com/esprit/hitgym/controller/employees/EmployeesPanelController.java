@@ -93,7 +93,6 @@ public class EmployeesPanelController implements Initializable {
 
     @FXML
     void addEmployee() throws IOException {
-
         new GeneralFunctions().switchSceneModalityCallback("AddEmployee.fxml", () -> {
             keyword.setText("");
             loadData();
@@ -202,7 +201,6 @@ public class EmployeesPanelController implements Initializable {
     private void loadData() {
         Platform.runLater(() -> {
             showrecords();
-
             Id.setCellValueFactory(new PropertyValueFactory<>("id"));
             FirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
             LastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));

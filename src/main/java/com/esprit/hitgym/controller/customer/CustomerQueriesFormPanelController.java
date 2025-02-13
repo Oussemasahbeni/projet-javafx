@@ -4,6 +4,7 @@ import com.esprit.hitgym.Entity.Queries;
 import com.esprit.hitgym.GeneralFunctions;
 import com.esprit.hitgym.controller.queries.QueryMenuButton;
 import com.esprit.hitgym.service.QueryService;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -73,7 +74,10 @@ public class CustomerQueriesFormPanelController implements Initializable {
 
     @FXML
     void CreateQuery(ActionEvent event) throws IOException {
-        new GeneralFunctions().switchSceneModality("CreateQuery.fxml");
+        new GeneralFunctions().switchSceneModalityCallback("CreateQuery.fxml", () -> {
+            keyword.setText("");
+            loadData();
+        });
     }
 
     @FXML
@@ -146,14 +150,18 @@ public class CustomerQueriesFormPanelController implements Initializable {
     private void loadData() {
         String username = CustomerPanelController.Customer.getUserName(); // Get logged-in username
         System.out.println("Fetching queries for username: " + username); // Log username
+        Platform.runLater(() -> {
+            showRecords(username); // Pass username to showRecords
 
-        showRecords(username); // Pass username to showRecords
+            Id.setCellValueFactory(new PropertyValueFactory<>("id"));
+            Description.setCellValueFactory(new PropertyValueFactory<>("description"));
+            Heading.setCellValueFactory(new PropertyValueFactory<>("heading"));
+            action.setCellValueFactory(new PropertyValueFactory<>("actionBtn"));
+            Status.setCellValueFactory(new PropertyValueFactory<>("StatusString"));
+        });
 
-        Id.setCellValueFactory(new PropertyValueFactory<>("id"));
-        Description.setCellValueFactory(new PropertyValueFactory<>("description"));
-        Heading.setCellValueFactory(new PropertyValueFactory<>("heading"));
-        action.setCellValueFactory(new PropertyValueFactory<>("actionBtn"));
-        Status.setCellValueFactory(new PropertyValueFactory<>("StatusString"));
+
+
     }
 
     private void showRecords(String username) { // Accept username as parameter
