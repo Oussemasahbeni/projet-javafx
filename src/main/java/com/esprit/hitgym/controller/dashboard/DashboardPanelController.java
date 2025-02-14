@@ -1,26 +1,70 @@
 package com.esprit.hitgym.controller.dashboard;
 
+import com.esprit.hitgym.Entity.Customer;
+import com.esprit.hitgym.Entity.Queries;
+import com.esprit.hitgym.controller.member.MembersDetailCardController;
+import com.esprit.hitgym.controller.queries.QueryMenuButton;
 import com.esprit.hitgym.service.CustomerService;
 import com.esprit.hitgym.service.ExpensesService;
+import com.esprit.hitgym.service.QueryService;
 import com.esprit.hitgym.service.RevenueService;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class DashboardPanelController implements Initializable {
 
+    @FXML
+    private TableView<Queries> queriesTable;
+
+    @FXML
+    private TableColumn<Queries, String> queryIdColumn;
+    @FXML
+    private TableColumn<Queries, String> queryNameColumn;
+    @FXML
+    private TableColumn<Queries, String> queryDetailsColumn;
+
+    private ObservableList<Queries> queriesList = FXCollections.observableArrayList();
+
+    private QueryService queryService = new QueryService();
     /*-Buttons-*/
     @FXML
     private Button PendingButton;
@@ -40,16 +84,24 @@ public class DashboardPanelController implements Initializable {
     private Button InStockButton;
     @FXML
     private Button OutofStockButton;
+
+    @FXML
+    private FlowPane membersFlowPane;
+
+    @FXML
+    private FlowPane queryFlowPane;
     /*--------*/
 
+/*
     @FXML
     private AnchorPane duePane;
 
     @FXML
     private AnchorPane expiredPane;
+*//*
 
     @FXML
-    private Text membershipsDue;
+    private Text membershipsDue;*/
 
     @FXML
     private StackPane memberstckpane;
@@ -202,6 +254,9 @@ public class DashboardPanelController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        loadCustomers();
+
+
         // Fetch data from the database
         double[] monthlyRevenues = revenueService.getMonthlyRevenues();
         double[] monthlyExpenses = expensesService.getMonthlyExpenses();
@@ -249,5 +304,222 @@ public class DashboardPanelController implements Initializable {
             System.out.println(e);
         }
         totalMembers.setText(String.valueOf(noOfCustomers));
+
+
+        // Charger les queries depuis le service
+        loadQueriess();
+    }
+
+    /*private void loadQueries() {
+        try {
+            // Récupérer les résultats de la requête
+            ResultSet resultSet = queryService.findAllQueries();
+
+            while (resultSet.next()) {
+                // Récupérer les valeurs des colonnes dans le ResultSet
+                int id = resultSet.getInt("id");
+                String username = resultSet.getString("username");  // Supposons qu'il y ait un champ 'username'
+                String email = resultSet.getString("email");  // Supposons qu'il y ait un champ 'email'
+                String heading = resultSet.getString("heading");  // Supposons qu'il y ait un champ 'heading'
+                String description = resultSet.getString("description");  // Supposons qu'il y ait un champ 'description'
+                Boolean status = resultSet.getBoolean("status");  // Supposons qu'il y ait un champ 'status'
+
+                // Créer un objet Queries avec les valeurs récupérées
+                Queries query = new Queries(id, username, email, heading, description, status);
+
+                // Ajouter l'objet query à la liste observable
+                queriesList.add(query);
+            }
+
+            // Ajouter la liste de queries au TableView
+            queriesTable.setItems(queriesList);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }*/
+
+    private void loadQueriess() {
+        Task<List<Queries>> loadCustomersTask = new Task<>() {
+            @Override
+            protected List<Queries> call() {
+                return queryService.getAllQueries(); // Récupérer la liste des clients
+            }
+        };
+
+        loadCustomersTask.setOnSucceeded(event -> {
+            List<Queries> queries = loadCustomersTask.getValue();
+            queryFlowPane.getChildren().clear(); // Nettoyer avant d'ajouter de nouveaux clients
+
+            for (Queries customer : queries) {
+                HBox customerCard = createQueryCard(customer);
+                queryFlowPane.getChildren().add(customerCard);
+            }
+        });
+
+        loadCustomersTask.setOnFailed(event -> {
+            System.err.println("Erreur lors du chargement des clients: " + loadCustomersTask.getException().getMessage());
+        });
+
+        new Thread(loadCustomersTask).start();
+    }
+
+    private void loadCustomers() {
+        Task<List<Customer>> loadCustomersTask = new Task<>() {
+            @Override
+            protected List<Customer> call() {
+                return customerService.findAllCustomersObs(); // Récupérer la liste des clients
+            }
+        };
+
+        loadCustomersTask.setOnSucceeded(event -> {
+            List<Customer> customers = loadCustomersTask.getValue();
+            membersFlowPane.getChildren().clear(); // Nettoyer avant d'ajouter de nouveaux clients
+
+            for (Customer customer : customers) {
+                HBox customerCard = createCustomerCard(customer);
+                membersFlowPane.getChildren().add(customerCard);
+            }
+        });
+
+        loadCustomersTask.setOnFailed(event -> {
+            System.err.println("Erreur lors du chargement des clients: " + loadCustomersTask.getException().getMessage());
+        });
+
+        new Thread(loadCustomersTask).start();
+    }
+
+
+    private void showMemberDetails(Customer customer) {
+        try {
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/esprit/hitgym/membersDetailCard.fxml"));
+            Parent root = loader.load();
+
+            // Récupérer le contrôleur et lui passer les informations du client
+            MembersDetailCardController controller = loader.getController();
+            controller.FullName = customer.getFirstName() + " " + customer.getLastName();
+            controller.Weight = customer.getWeight();
+            controller.Address = customer.getAddress();
+            controller.Emails = customer.getEmail();
+
+
+
+
+
+
+            // Créer et afficher la popup
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Customer Details");
+            stage.initModality(Modality.APPLICATION_MODAL); // Bloquer la fenêtre principale
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    private HBox createCustomerCard(Customer customer) {
+        HBox card = new HBox();
+        card.getStyleClass().add("myownHBOX"); // Appliquer le style CSS
+        card.setPadding(new Insets(10));
+        card.setSpacing(20);
+        card.setPrefHeight(100);
+        card.setPrefWidth(493);
+
+        // VBox pour organiser le nom, le numéro et le statut en colonne
+        VBox textContainer = new VBox();
+        textContainer.setSpacing(5);
+
+        // Nom et prénom du client
+        Text nameText = new Text(customer.getFirstName() + " " + customer.getLastName());
+        nameText.setFont(Font.font("System", FontWeight.BOLD, 18));
+
+        // Numéro du client
+        Text numberText = new Text("Number: " + customer.getPhoneNumber());
+        numberText.setFont(Font.font("System", FontWeight.NORMAL, 14));
+        numberText.setFill(Color.DARKGRAY);
+
+        // Statut du client
+        Text statusText = new Text(customer.isActive() ? "Active" : "Pending");
+        statusText.setFont(Font.font("System", FontPosture.ITALIC, 14));
+
+        // Changer la couleur du texte en fonction du statut
+        if (customer.isActive()) {
+            statusText.setFill(Color.GREEN); // 🟢 Vert si actif
+        } else {
+            statusText.setFill(Color.RED); // 🔴 Rouge si en attente
+        }
+
+        // Ajouter les textes au conteneur vertical
+        textContainer.getChildren().addAll(nameText, numberText, statusText);
+        HBox.setMargin(textContainer, new Insets(20, 0, 0, 20));
+
+        // Bouton "View"
+        Button viewButton = new Button("View");
+        viewButton.setPrefSize(111, 25);
+        viewButton.getStyleClass().add("myownbuttons"); // Appliquer le CSS
+        HBox.setMargin(viewButton, new Insets(30, 20, 0, 80));
+
+        // Ajouter les éléments à la carte
+        card.getChildren().addAll(textContainer, viewButton);
+        // Action du bouton pour ouvrir la popup
+        viewButton.setOnAction(event -> showMemberDetails(customer));
+
+
+        return card;
+    }
+
+    private HBox createQueryCard(Queries customer) {
+
+        HBox card = new HBox();
+
+        card.getStyleClass().add("myownHBOX"); // Appliquer le style CSS
+        card.setPadding(new Insets(10));
+        card.setSpacing(20);
+        card.setPrefHeight(100);
+
+        card.setPrefWidth(493);
+
+        // VBox pour organiser le nom, le numéro et le statut en colonne
+        VBox textContainer = new VBox();
+        textContainer.setSpacing(5);
+
+        // Nom et prénom du client
+        Text nameText = new Text(customer.getEmail());
+        nameText.setFont(Font.font("System", FontWeight.BOLD, 18));
+
+
+
+        // Ajouter les textes au conteneur vertical
+        textContainer.getChildren().addAll(nameText);
+        HBox.setMargin(textContainer, new Insets(20, 0, 0, 20));
+
+        // Bouton "View"
+        Button viewButton = new Button("View");
+        viewButton.setPrefSize(111, 25);
+        viewButton.getStyleClass().add("myownbuttons"); // Appliquer le CSS
+        HBox.setMargin(viewButton, new Insets(30, 20, 0, 80));
+
+        // Ajouter les éléments à la carte
+        card.getChildren().addAll(textContainer, viewButton);
+        // Action du bouton pour ouvrir la popup
+        //viewButton.setOnAction(event -> showMemberDetails(customer));
+
+
+        return card;
+    }
+
+    private String formatDate(Date date) {
+        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        return localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+    }
+
+    private void handleViewCustomer(Customer customer) {
+        // Handle view action here
+        System.out.println("Viewing customer: " + customer.getFirstName());
     }
 }
+
