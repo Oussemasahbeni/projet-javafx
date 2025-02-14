@@ -6,21 +6,22 @@ import java.sql.Date;
 
 public class BMI {
 
-    private double BMI;
+    private double bmiValue;
     private String BMIStatus;
     private String BMIDescription;
     private double Weight;
     private double Height;
-    private java.sql.Date RecordedDate;
+    private Date RecordedDate;
     private String RecordedMonth;
     private int id;
 
-    public BMI(double weight, Date recordedDate, int id, double bmi, double height) {
-        Weight = weight;
-        RecordedDate = recordedDate;
+    // Constructor: Note the parameter order: weight, recordedDate, id, height, bmiValue
+    public BMI(double weight, Date recordedDate, int id, double height, double bmiValue) {
+        this.Weight = weight;
+        this.RecordedDate = recordedDate;
         this.id = id;
         this.Height = height;
-        this.BMI = bmi;
+        this.bmiValue = bmiValue;
 
         CustomDate customDate = new CustomDate(recordedDate);
         this.RecordedMonth = customDate.getMonthName();
@@ -34,12 +35,12 @@ public class BMI {
         this.id = id;
     }
 
-    public double getBMI() {
-        return BMI;
+    public double getBmiValue() {
+        return bmiValue;
     }
 
-    public void setBMI(double BMI) {
-        this.BMI = BMI;
+    public void setBmiValue(double bmiValue) {
+        this.bmiValue = bmiValue;
     }
 
     public String getBMIStatus() {
@@ -63,7 +64,7 @@ public class BMI {
     }
 
     public void setWeight(double weight) {
-        Weight = weight;
+        this.Weight = weight;
     }
 
     public double getHeight() {
@@ -71,7 +72,7 @@ public class BMI {
     }
 
     public void setHeight(double height) {
-        Height = height;
+        this.Height = height;
     }
 
     public Date getRecordedDate() {
@@ -79,7 +80,7 @@ public class BMI {
     }
 
     public void setRecordedDate(Date recordedDate) {
-        RecordedDate = recordedDate;
+        this.RecordedDate = recordedDate;
     }
 
     public String getRecordedMonth() {
@@ -87,6 +88,7 @@ public class BMI {
     }
 
     public void setRecordedMonth(String recordedMonth) {
-        RecordedMonth = recordedMonth;
+        this.RecordedMonth = recordedMonth;
     }
+
 }

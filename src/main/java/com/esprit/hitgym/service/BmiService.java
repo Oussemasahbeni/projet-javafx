@@ -1,3 +1,5 @@
+// In file: com/esprit/hitgym/service/BmiService.java
+
 package com.esprit.hitgym.service;
 
 import com.esprit.hitgym.Entity.BMI;
@@ -26,15 +28,17 @@ public class BmiService {
             queryStatement.setInt(4, fk_customer_id);
             queryStatement.setString(5, bmi.getRecordedMonth());
             queryStatement.setDouble(6, bmi.getHeight());
-            queryStatement.setDouble(7, bmi.getBMI());
+            queryStatement.setDouble(7, bmi.getBmiValue());
 
             queryStatement.executeUpdate();
+            return true;
+
 
         } catch (SQLException e) {
             System.out.println("Error : " + e);
+            return false;
         }
 
-        return true;
     }
 
     public ResultSet findAll() {
@@ -60,5 +64,24 @@ public class BmiService {
 
         return bmiRs;
 
+    }
+
+    public ResultSet findBmiByCustomerId(int customerId) {
+        PreparedStatement queryStatement = null;
+        ResultSet bmiRs = null;
+
+        try {
+            queryStatement = getConnection().prepareStatement("""
+                    SELECT * FROM bmi WHERE fk_customer_id = ?
+                    """);
+            queryStatement.setInt(1, customerId);
+            bmiRs = queryStatement.executeQuery();
+
+
+        } catch (SQLException e) {
+            System.out.println("Error : " + e);
+        }
+
+        return bmiRs;
     }
 }
