@@ -163,4 +163,39 @@ public class QueryService {
 
         return null; // Return null if any error occurs.
     }
+
+    public String getLatestHeading() {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        String latestHeading = null;
+
+        try {
+            // SQL query to get the latest query heading based on the created_date
+            String query = "SELECT heading FROM queries ORDER BY created_date DESC LIMIT 1";
+            preparedStatement = getConnection().prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+
+            // Check if there is a result and retrieve the latest heading
+            if (resultSet.next()) {
+                latestHeading = resultSet.getString("heading");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error in getLatestHeading: " + e);
+            e.printStackTrace();
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+            } catch (SQLException e) {
+                System.err.println("Error closing resources: " + e.getMessage());
+            }
+        }
+
+        return latestHeading;
+    }
 }

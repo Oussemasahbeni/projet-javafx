@@ -9,6 +9,8 @@ import com.esprit.hitgym.helpers.Login;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.esprit.hitgym.utils.Datasource.getConnection;
 
@@ -214,6 +216,26 @@ public class EmployeeService {
             }
 
         }
+    }
+
+    public List<String> getAllEmployeeEmails() {
+        List<String> emails = new ArrayList<>();
+        PreparedStatement queryStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            queryStatement = getConnection().prepareStatement("SELECT email FROM employees");
+            resultSet = queryStatement.executeQuery();
+
+            while (resultSet.next()) {
+                emails.add(resultSet.getString("email"));
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error retrieving employee emails: " + e);
+        }
+
+        return emails;
     }
 
 }

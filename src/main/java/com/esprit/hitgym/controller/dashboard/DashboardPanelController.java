@@ -258,12 +258,12 @@ public class DashboardPanelController implements Initializable {
 
 
         // Fetch data from the database
-        double[] monthlyRevenues = revenueService.getMonthlyRevenues();
         double[] monthlyExpenses = expensesService.getMonthlyExpenses();
-        double[] monthlyProfits = new double[12];
+        double[] monthlyProfits = revenueService.getMonthlyRevenues();
+        double[] monthlyRevenues = new double[12];
 
         for (int i = 0; i < 12; i++) {
-            monthlyProfits[i] = monthlyRevenues[i] - monthlyExpenses[i];
+            monthlyRevenues[i] = monthlyProfits[i] + monthlyExpenses[i];
         }
 
         // Calculate the sum of the arrays
@@ -309,35 +309,6 @@ public class DashboardPanelController implements Initializable {
         // Charger les queries depuis le service
         loadQueriess();
     }
-
-    /*private void loadQueries() {
-        try {
-            // Récupérer les résultats de la requête
-            ResultSet resultSet = queryService.findAllQueries();
-
-            while (resultSet.next()) {
-                // Récupérer les valeurs des colonnes dans le ResultSet
-                int id = resultSet.getInt("id");
-                String username = resultSet.getString("username");  // Supposons qu'il y ait un champ 'username'
-                String email = resultSet.getString("email");  // Supposons qu'il y ait un champ 'email'
-                String heading = resultSet.getString("heading");  // Supposons qu'il y ait un champ 'heading'
-                String description = resultSet.getString("description");  // Supposons qu'il y ait un champ 'description'
-                Boolean status = resultSet.getBoolean("status");  // Supposons qu'il y ait un champ 'status'
-
-                // Créer un objet Queries avec les valeurs récupérées
-                Queries query = new Queries(id, username, email, heading, description, status);
-
-                // Ajouter l'objet query à la liste observable
-                queriesList.add(query);
-            }
-
-            // Ajouter la liste de queries au TableView
-            queriesTable.setItems(queriesList);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }*/
 
     private void loadQueriess() {
         Task<List<Queries>> loadCustomersTask = new Task<>() {

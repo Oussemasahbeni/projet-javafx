@@ -3,7 +3,9 @@ package com.esprit.hitgym.controller.customer;
 import com.esprit.hitgym.Entity.Queries;
 import com.esprit.hitgym.GeneralFunctions;
 import com.esprit.hitgym.controller.queries.QueryMenuButton;
+import com.esprit.hitgym.service.EmployeeService;
 import com.esprit.hitgym.service.QueryService;
+import com.esprit.hitgym.utils.EmailSender;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,11 +18,13 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import javax.mail.MessagingException;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Comparator;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class CustomerQueriesFormPanelController implements Initializable {
@@ -28,9 +32,13 @@ public class CustomerQueriesFormPanelController implements Initializable {
     private final static int rowsPerPage = 10;
 
     private final QueryService queryService;
+    private final EmployeeService employeeService;
+    private final EmailSender emailSender;
 
     public CustomerQueriesFormPanelController() {
         this.queryService = new QueryService();
+        this.emailSender = new EmailSender();
+        this.employeeService = new EmployeeService();
     }
 
     @FXML
@@ -77,6 +85,11 @@ public class CustomerQueriesFormPanelController implements Initializable {
         new GeneralFunctions().switchSceneModalityCallback("CreateQuery.fxml", () -> {
             keyword.setText("");
             loadData();
+            try {
+                sendEmailToAdmins();
+            } catch (MessagingException e) {
+                throw new RuntimeException(e);
+            }
         });
     }
 
@@ -222,5 +235,56 @@ public class CustomerQueriesFormPanelController implements Initializable {
         }
 
         alert.showAndWait();
+    }
+
+    private void sendEmailToAdmins() throws MessagingException {
+        // Fetch all employee emails
+        List<String> employeeEmails = this.employeeService.getAllEmployeeEmails();
+
+        // Subject and email content
+        String subject = "New Query Submitted by a Customer";
+
+        String emailContent = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">" +
+                "<html lang=\"en\" dir=\"ltr\" xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:v=\"urn:schemas-microsoft-com:vml\">" +
+                "<head>" +
+                "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">" +
+                "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=yes\">" +
+                "<meta name=\"x-apple-disable-message-reformatting\">" +
+                "<meta name=\"format-detection\" content=\"telephone=no, date=no, address=no, email=no, url=no\">" +
+                "</head>" +
+                "<body style=\"background-color:#f6f9fc;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Ubuntu,sans-serif;margin:0;padding:0\">" +
+                "<div style=\"table-layout:fixed;width:100%\">" +
+                "<div style=\"margin:0 auto;max-width:600px\">" +
+                "<table align=\"center\" width=\"100%\" role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" style=\"max-width:600px;background-color:#ffffff;margin:0 auto;padding:20px 0 48px;margin-bottom:64px\">" +
+                "<tbody>" +
+                "<tr>" +
+                "<td align=\"center\" style=\"padding:0 48px\">" +
+                "<h2 style=\"font-size:24px;line-height:32px;color:#333333;margin:16px 0;text-align:center\">New Customer Query Received</h2>" +
+                "<p style=\"font-size:16px;line-height:24px;margin:16px 0;color:#525f7f;text-align:center\">" +
+                "A new query has been submitted by a customer. Please review and respond as soon as possible.</p>" +
+                "<p style=\"font-size:16px;line-height:24px;margin:16px 0;color:#525f7f;text-align:center\">" +
+                "<strong>Query Details:</strong></p>" +
+                "<ul style=\"text-align:center;list-style:none;padding:0;\">" +
+                "<li style=\"margin:5px 0;\"><strong>Heading:</strong> " + this.queryService.getLatestHeading() + "</li>" +
+                "<li style=\"margin:5px 0;\"><strong>Description:</strong> A new query has been submitted. Check the system for details.</li>" +
+                "</ul>" +
+                "<hr style=\"border:none;border-top:1px solid #eaeaea;width:100%;border-color:#e6ebf1;margin:20px 0\">" +
+                "<p style=\"font-size:16px;line-height:24px;margin:16px 0;color:#525f7f;text-align:center\">" +
+                "Please log in to the system to respond.</p>" +
+                "<p style=\"font-size:16px;line-height:24px;margin:16px 0;color:#525f7f;text-align:center\">" +
+                "Best Regards,<br><strong>HitGym Team</strong></p>" +
+                "</td>" +
+                "</tr>" +
+                "</tbody>" +
+                "</table>" +
+                "</div>" +
+                "</div>" +
+                "</body>" +
+                "</html>";
+
+        // Send email to all employees
+        for (String email : employeeEmails) {
+            emailSender.sendEmail(email, subject, emailContent);
+        }
     }
 }
