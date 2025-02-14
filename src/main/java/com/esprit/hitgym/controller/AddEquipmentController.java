@@ -37,7 +37,7 @@ public class AddEquipmentController {
         File selectedFile = fileChooser.showOpenDialog(new Stage());
         if (selectedFile != null) {
             try {
-                String targetDirectory = "src/main/resources/com/esprit/hitgym/bordericons/";
+                String targetDirectory = "src/main/resources/com/esprit/hitgym/equipments/";
                 File targetDir = new File(targetDirectory);
                 if (!targetDir.exists()) {
                     targetDir.mkdirs();
@@ -47,7 +47,7 @@ public class AddEquipmentController {
                 File targetFile = new File(targetDirectory + fileName);
                 Files.copy(selectedFile.toPath(), targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
-                imageUrl = "/com/esprit/hitgym/bordericons/" + fileName;
+                imageUrl = "/com/esprit/hitgym/equipments/" + fileName;
                 imageView.setImage(new Image(targetFile.toURI().toString()));
             } catch (IOException e) {
                 System.err.println("Error copying image file: " + e.getMessage());
