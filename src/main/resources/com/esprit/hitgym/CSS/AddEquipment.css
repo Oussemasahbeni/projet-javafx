@@ -1,0 +1,43 @@
+/* 🔹 General Styles */
+.root {
+    -fx-background-color: #f5f5f5;
+    -fx-font-family: "Arial";
+}
+
+/* 🔹 Title */
+.title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-fill: #2C5364;
+}
+
+/* 🔹 Input Fields */
+.input-field {
+    -fx-pref-width: 300px;
+    -fx-pref-height: 40px;
+    -fx-font-size: 16px;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-border-color: #2C5364;
+    -fx-border-width: 1px;
+}
+
+/* 🔹 Buttons */
+.upload-button, .save-button {
+    -fx-pref-width: 200px;
+    -fx-pref-height: 40px;
+    -fx-font-size: 16px;
+    -fx-background-color: #2C5364;
+    -fx-text-fill: white;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+}
+
+.upload-button:hover, .save-button:hover {
+    -fx-background-color: #203A43;
+}
+
+/* 🔹 Image View */
+.image-view {
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 10, 0, 0, 5);
+}

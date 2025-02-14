@@ -131,6 +131,15 @@ CREATE TABLE `packages`
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
 
+CREATE TABLE `equipments`
+(
+    `name`       varchar(255) NOT NULL,
+    `image_url`      varchar(255)      NOT NULL,
+    `category` text DEFAULT NULL
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci;
+
 --
 -- Dumping data for table `packages`
 --
