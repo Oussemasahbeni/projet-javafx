@@ -173,6 +173,7 @@ public class RevenuePanelController implements Initializable {
             totalMonthlyRevenue.setText(String.valueOf(totalRevenue));
             //TODO set Monthly expense from db here
             totalMonthlyExpense.setText(String.valueOf(totalCurrentExpense));
+
         } catch (Exception e) {
             System.out.println(e);
         }

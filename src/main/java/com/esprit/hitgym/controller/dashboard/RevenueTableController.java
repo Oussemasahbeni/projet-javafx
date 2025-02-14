@@ -84,17 +84,14 @@ public class RevenueTableController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         pagination.setPageFactory(this::createPage);
-
         loadData();
+        showrecords(); // Ensure table refreshes every time the interface loads
 
-        /*------Searching With Keryword Logic----------*/
+        /*------Searching With Keyword Logic----------*/
         FilteredList<Revenue> filteredList = new FilteredList<>(RevenueList, b -> true);
 
-        keyword.textProperty().addListener((observable, oldvalue, newvalue) ->
-        {
-
+        keyword.textProperty().addListener((observable, oldvalue, newvalue) -> {
             filteredList.setPredicate(revenue -> {
                 if (newvalue.isEmpty() || newvalue.isBlank() || newvalue == null) {
                     return true;
@@ -112,13 +109,11 @@ public class RevenueTableController implements Initializable {
                 } else {
                     return false;
                 }
-
             });
             SortedList<Revenue> sortedList = new SortedList<>(filteredList);
             sortedList.comparatorProperty().bind(RevenueView.comparatorProperty());
             RevenueView.setItems(sortedList);
         });
-
     }
 
     private Node createPage(Integer pageIndex) {
@@ -160,15 +155,19 @@ public class RevenueTableController implements Initializable {
         RevenueList.clear();
         try {
             resultSet = revenueService.getAllRevenues();
-
-
             while (resultSet.next()) {
-
                 RevenueList.add(new Revenue(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getInt(5), resultSet.getDate(4)));
-                RevenueView.setItems(RevenueList);
             }
+            RevenueView.setItems(FXCollections.observableArrayList(RevenueList));
+            RevenueView.refresh(); // Force refresh
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
+    private void refreshData() {
+        showrecords(); // Reload the table
+        RevenueView.refresh(); // Force UI update
+    }
+
 }

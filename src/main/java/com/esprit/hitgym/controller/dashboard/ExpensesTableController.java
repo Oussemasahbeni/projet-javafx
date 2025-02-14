@@ -2,8 +2,10 @@ package com.esprit.hitgym.controller.dashboard;
 
 import com.esprit.hitgym.Entity.Expense;
 import com.esprit.hitgym.Entity.Revenue;
+import com.esprit.hitgym.GeneralFunctions;
 import com.esprit.hitgym.service.ExpensesService;
 import com.esprit.hitgym.service.RevenueService;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -15,6 +17,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -63,10 +66,14 @@ public class ExpensesTableController implements Initializable {
     }
 
     @FXML
+    void addExpenseButton() throws IOException {
+
+        new GeneralFunctions().switchSceneModalityCallback("AddExpense.fxml", this::refreshData);
+    }
+
+    @FXML
     void refreshbtn(ActionEvent event) {
-    System.out.println("test houniii");
-        keyword.setText("");
-        showrecords();
+        refreshData();
     }
 
     @FXML
@@ -165,9 +172,21 @@ public class ExpensesTableController implements Initializable {
                                 resultSet.getInt("amount"),
                                 resultSet.getDate("selected_date")));
             }
+            System.out.println(ExpenseList);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void refreshData(){
+        Platform.runLater(() -> {
+            keyword.setText("");
+            loadData();
+            int currentPage = pagination.getCurrentPageIndex();
+            pagination.setPageFactory(this::createPage);
+            pagination.setCurrentPageIndex(currentPage);
+            ExpenseView.refresh();
+        });
     }
 }
 
